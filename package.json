@@ -6,6 +6,7 @@
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/config/dataSource.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
@@ -35,6 +36,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-node": "^11.1.0",
     "globals": "^16.0.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0"
   }

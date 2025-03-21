@@ -8,11 +8,17 @@ export class Pet {
   @PrimaryGeneratedColumn()
   id: number
 
+  @Column({ length: 20, unique: true, nullable: false })
+  lk_pet_code: string
+
   @Column({ nullable: false })
   name: string
 
   @Column({ nullable: false })
   breed: string
+
+  @Column({ nullable: false })
+  specie: string
 
   @Column({ default: false })
   is_available: boolean
@@ -23,9 +29,9 @@ export class Pet {
   @Column()
   health: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: false })
   created_at: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: false })
   updated_at: Date
 }

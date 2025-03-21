@@ -1,7 +1,9 @@
 import 'reflect-metadata'
+
 import { DataSource } from 'typeorm'
-import { Pet } from '../entities' // ToDo: fix to "@/src/entities" if possible
 import { config } from 'dotenv'
+
+import { Pet } from '@/src/entities'
 
 config()
 

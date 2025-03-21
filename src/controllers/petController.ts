@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from 'express'
-import asyncHandler = require('express-async-handler')
+import { Request, Response } from 'express'
 
 import { Pet } from '@/src/entities'
 import { AppDataSource } from '@/src/config'
+import asyncHandler = require('express-async-handler')
 
-const petRepo = AppDataSource.getRepository(Pet)
+const petRepository = AppDataSource.getRepository(Pet)
 
 export const PetController = {
   getPets: asyncHandler(async (_req: Request, res: Response) => {
@@ -13,7 +13,7 @@ export const PetController = {
     // res.json(pets);
   }),
 
-  addPet: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  addPet: asyncHandler(async (req: Request, res: Response) => {
     res.json('createPet')
     // const pet = petRepo.create(req.body);
     // const savedPet = await petRepo.save(pet);

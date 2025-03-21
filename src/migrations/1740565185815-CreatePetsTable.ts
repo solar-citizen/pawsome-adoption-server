@@ -55,6 +55,6 @@ export class CreatePetsTable1740565185815 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('pets')
+    await queryRunner.dropTable(pets)
   }
 }

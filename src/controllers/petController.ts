@@ -7,10 +7,9 @@ import asyncHandler = require('express-async-handler')
 const petRepository = AppDataSource.getRepository(Pet)
 
 export const PetController = {
-  getPets: asyncHandler(async (_req: Request, res: Response) => {
-    res.json('getPets')
-    // const pets = await petRepo.find();
-    // res.json(pets);
+  getAllPets: asyncHandler(async (_req: Request, res: Response) => {
+    const pets = await petRepository.find()
+    res.json(pets)
   }),
 
   addPet: asyncHandler(async (req: Request, res: Response) => {

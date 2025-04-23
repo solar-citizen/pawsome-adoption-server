@@ -4,9 +4,9 @@ import cors = require('cors')
 import { Request, Response, NextFunction } from 'express'
 import { config } from 'dotenv'
 
-import { logger } from '@/src/middleware'
-import { router } from '@/src/routes'
-import { AppDataSource } from '@/src/config'
+import { logger } from '#/middleware'
+import { router } from '#/routes'
+import { AppDataSource } from '#/config'
 
 config()
 
@@ -30,4 +30,4 @@ AppDataSource.initialize()
       console.log(`Server running on port ${APP_PORT}`)
     })
   })
-  .catch((error) => console.log('Database connection error:', error))
+  .catch(error => console.log('Database connection error:', error))

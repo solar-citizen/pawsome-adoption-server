@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
-import { Pet } from '@/src/entities'
-import { AppDataSource } from '@/src/config'
+import { Pet } from '#/entities'
+import { AppDataSource } from '#/config'
 import asyncHandler = require('express-async-handler')
 
 const petRepository = AppDataSource.getRepository(Pet)

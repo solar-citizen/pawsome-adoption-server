@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
-import { constants } from '@/src/lib'
+import { constants } from '#/lib'
 
 const { pets } = constants.tables
 

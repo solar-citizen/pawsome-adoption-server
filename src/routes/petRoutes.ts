@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { PetController } from '@/src/controllers'
+import { PetController } from '#/controllers'
 
 const petRoutes = Router()
 

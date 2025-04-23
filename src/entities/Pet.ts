@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { constants } from '@/src/lib'
+import { constants } from '#/lib'
 
 const { pets } = constants.tables
 

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { Pet } from '@/src/entities'
+import { Pet } from '#/entities'
 
 export class PopulatePetsTable1742586592681 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -191,10 +191,26 @@ export class PopulatePetsTable1742586592681 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     const petCodes = [
-      'P-21-03-2025-0001', 'P-21-03-2025-0002', 'P-21-03-2025-0003', 'P-21-03-2025-0004', 'P-21-03-2025-0005',
-      'P-21-03-2025-0006', 'P-21-03-2025-0007', 'P-21-03-2025-0008', 'P-21-03-2025-0009', 'P-21-03-2025-0010',
-      'P-21-03-2025-0011', 'P-21-03-2025-0012', 'P-21-03-2025-0013', 'P-21-03-2025-0014', 'P-21-03-2025-0015',
-      'P-21-03-2025-0016', 'P-21-03-2025-0017', 'P-21-03-2025-0018', 'P-21-03-2025-0019', 'P-21-03-2025-0020',
+      'P-21-03-2025-0001',
+      'P-21-03-2025-0002',
+      'P-21-03-2025-0003',
+      'P-21-03-2025-0004',
+      'P-21-03-2025-0005',
+      'P-21-03-2025-0006',
+      'P-21-03-2025-0007',
+      'P-21-03-2025-0008',
+      'P-21-03-2025-0009',
+      'P-21-03-2025-0010',
+      'P-21-03-2025-0011',
+      'P-21-03-2025-0012',
+      'P-21-03-2025-0013',
+      'P-21-03-2025-0014',
+      'P-21-03-2025-0015',
+      'P-21-03-2025-0016',
+      'P-21-03-2025-0017',
+      'P-21-03-2025-0018',
+      'P-21-03-2025-0019',
+      'P-21-03-2025-0020',
     ]
 
     await Promise.all(petCodes.map(code => queryRunner.manager.delete(Pet, { lk_pet_code: code })))

@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { config } from 'dotenv'
 
-import { Pet } from '@/src/entities'
+import { Pet } from '#/entities'
 
 config()
 

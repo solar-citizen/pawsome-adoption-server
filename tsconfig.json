@@ -4,9 +4,7 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "#/*": ["./src/*"]
     }
   },
   "target": "ES6"

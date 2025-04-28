@@ -3,7 +3,7 @@ import { PetController } from '#/controllers'
 
 const petRoutes = Router()
 
-petRoutes.get('/pets', PetController.getAllPets)
-petRoutes.post('/add-pet', PetController.addPet)
+petRoutes.get('/pets', PetController.getPets)
+petRoutes.post('/pets/add', PetController.addPet)
 
 export { petRoutes }

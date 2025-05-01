@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ILike } from 'typeorm'
 
 import { Pet } from '#/entities'
 import { AppDataSource } from '#/config'
@@ -13,6 +14,7 @@ export const PetController = {
    * Query params:
    * - page: Current page number (1-indexed)
    * - limit: Number of items per page
+   * - full_text_search: search string
    *
    * Returns paginated pets with metadata
    */
@@ -20,6 +22,7 @@ export const PetController = {
     // Parse query params (1-indexed pages)
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 10
+    const fullTextSearch = req.query.full_text_search || null
 
     // Compute skip and fetch data
     const skip = (page - 1) * limit
@@ -27,6 +30,7 @@ export const PetController = {
       petRepository.find({
         skip,
         take: limit,
+        where: fullTextSearch ? [{ name: ILike(`%${fullTextSearch}%`) }] : {},
         order: { lk_pet_code: 'ASC' },
       }),
       petRepository.count(),

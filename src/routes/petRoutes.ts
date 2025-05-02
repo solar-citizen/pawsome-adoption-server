@@ -1,9 +1,11 @@
 import { Router } from 'express'
-import { PetController } from '#/controllers'
+import { petController } from '#/controllers'
 
 const petRoutes = Router()
 
-petRoutes.get('/pets', PetController.getPets)
-petRoutes.post('/pets/add', PetController.addPet)
+const { addPet, getPets } = petController
+
+petRoutes.get('/pets', getPets)
+petRoutes.post('/pets/add', addPet)
 
 export { petRoutes }

@@ -7,7 +7,7 @@ import asyncHandler = require('express-async-handler')
 
 const petRepository = AppDataSource.getRepository(Pet)
 
-export const PetController = {
+export const petController = {
   /**
    * Get all pets with pagination support
    *
@@ -19,16 +19,15 @@ export const PetController = {
    * Returns paginated pets with metadata
    */
   getPets: asyncHandler(async (req: Request, res: Response) => {
-    // Parse query params (1-indexed pages)
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 10
+    const offset = (page - 1) * limit
     const fullTextSearch = req.query.full_text_search || null
 
-    // Compute skip and fetch data
-    const skip = (page - 1) * limit
+    // Fetch data and it's count based on pagination offset and params
     const [pets, petsTotal] = await Promise.all([
       petRepository.find({
-        skip,
+        skip: offset,
         take: limit,
         where: fullTextSearch ? [{ name: ILike(`%${fullTextSearch}%`) }] : {},
         order: { lk_pet_code: 'ASC' },
@@ -37,8 +36,8 @@ export const PetController = {
     ])
 
     // Calculate pagination metadata
-    const petsFrom = petsTotal > 0 ? skip + 1 : 0
-    const petsTo = petsTotal > 0 ? Math.min(skip + limit, petsTotal) : 0
+    const petsFrom = petsTotal > 0 ? offset + 1 : 0
+    const petsTo = petsTotal > 0 ? Math.min(offset + limit, petsTotal) : 0
     const lastPage = Math.max(Math.ceil(petsTotal / limit), 1)
 
     res.json({

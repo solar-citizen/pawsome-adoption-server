@@ -1,1 +1,3 @@
-export { PetController } from './petController'
+import { petController } from './pets'
+
+export { petController }

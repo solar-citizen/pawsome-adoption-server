@@ -1,10 +1,12 @@
-import { Router } from 'express'
-import { routes } from '#/shared'
-import { petRouter } from './pets/petRouter'
+import { Router } from 'express';
 
-const router = Router()
-const { api } = routes
+import { routes } from '#/shared';
 
-router.use(api, petRouter)
+import { petRouter } from './pets/petRouter';
 
-export { router }
+const router = Router();
+const { api } = routes;
+
+router.use(api, petRouter);
+
+export { router };

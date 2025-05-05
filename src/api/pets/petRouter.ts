@@ -1,12 +1,12 @@
-import { Router } from 'express'
+import { Router } from 'express';
 
-import { petController } from './petController'
+import { petController } from './petController';
 
-const petRouter = Router()
+const petRouter = Router();
 
-const { addPet, getPets } = petController
+const { addPet, getPets } = petController;
 
-petRouter.get('/pets', getPets)
-petRouter.post('/pets/add', addPet)
+petRouter.get('/pets', getPets);
+petRouter.post('/pets/add', addPet);
 
-export { petRouter }
+export { petRouter };

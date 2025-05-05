@@ -1,9 +1,9 @@
-import path from 'path'
-import { transports } from 'winston'
+import path from 'path';
+import { transports } from 'winston';
 
-import 'winston-daily-rotate-file'
+import 'winston-daily-rotate-file';
 
-const { DailyRotateFile, Console } = transports
+const { DailyRotateFile, Console } = transports;
 
 export function createErrorTransport(logDir: string) {
   return new DailyRotateFile({
@@ -13,7 +13,7 @@ export function createErrorTransport(logDir: string) {
     maxSize: '20m',
     maxFiles: '14d',
     zippedArchive: true,
-  })
+  });
 }
 
 export function createCombinedTransport(logDir: string) {
@@ -23,7 +23,7 @@ export function createCombinedTransport(logDir: string) {
     maxSize: '20m',
     maxFiles: '14d',
     zippedArchive: true,
-  })
+  });
 }
 
-export const consoleTransport = new Console()
+export const consoleTransport = new Console();

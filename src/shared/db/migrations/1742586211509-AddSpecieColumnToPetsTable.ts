@@ -1,8 +1,8 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
+import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-import { tables } from '#/shared/lib/constants'
+import { tables } from '#/shared/lib/constants';
 
-const { pets } = tables
+const { pets } = tables;
 
 export class AddSpecieColumnToPetsTable1742586211509 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -13,10 +13,10 @@ export class AddSpecieColumnToPetsTable1742586211509 implements MigrationInterfa
         type: 'varchar(100)',
         isNullable: false,
       }),
-    )
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn(pets, 'specie')
+    await queryRunner.dropColumn(pets, 'specie');
   }
 }

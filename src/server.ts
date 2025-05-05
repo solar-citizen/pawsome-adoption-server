@@ -1,44 +1,44 @@
-import cors from 'cors'
-import express, { Express, Request, Response, NextFunction } from 'express'
-import helmet from 'helmet'
-import morgan from 'morgan'
+import cors from 'cors';
+import express, { Express, Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
-import { config } from 'dotenv'
-import { StatusCodes } from 'http-status-codes'
+import { config } from 'dotenv';
+import { StatusCodes } from 'http-status-codes';
 
-import { router } from '#/api'
-import { corsConfig, AppDataSource } from '#/shared'
+import { router } from '#/api';
+import { corsConfig, AppDataSource } from '#/shared';
 
-config()
+config();
 
-const app = express()
+const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('dev'))
+  app.use(morgan('dev'));
 } else {
   app.use(
     morgan('tiny', {
       skip: (_req, res) => res.statusCode < 400,
     }),
-  )
+  );
 }
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(helmet())
+  app.use(helmet());
 }
 
-app.use(cors(corsConfig))
-app.use(express.json())
-app.use(router)
+app.use(cors(corsConfig));
+app.use(express.json());
+app.use(router);
 
 app.use((_req: Request, res: Response) => {
-  res.status(StatusCodes.NOT_FOUND).json({ error: 'Resource not found' })
-})
+  res.status(StatusCodes.NOT_FOUND).json({ error: 'Resource not found' });
+});
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack)
-  res.status(500).json({ error: 'Internal Server Error' })
-})
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
 /**
  * Initialize the application asynchronously to ensure all required components (database, etc.) are
@@ -46,13 +46,13 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
  */
 const init = async (): Promise<Express> => {
   try {
-    await AppDataSource.initialize()
-    console.log('Database connection established successfully')
-    return app
+    await AppDataSource.initialize();
+    console.log('Database connection established successfully');
+    return app;
   } catch (error) {
-    console.error('Failed to initialize application:', error)
-    throw error
+    console.error('Failed to initialize application:', error);
+    throw error;
   }
-}
+};
 
-export default init
+export default init;

@@ -1,38 +1,44 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { tables } from '#/shared/lib/constants'
+import { tables } from '#/shared/lib/constants';
 
-const { pets } = tables
+const { pets } = tables;
 
 @Entity(pets)
 export class Pet {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ length: 20, unique: true, nullable: false })
-  lk_pet_code: string
+  lk_pet_code: string;
 
   @Column({ nullable: false })
-  name: string
+  name: string;
 
   @Column({ nullable: false })
-  breed: string
+  breed: string;
 
   @Column({ nullable: false })
-  specie: string
+  specie: string;
 
   @Column({ default: false })
-  is_available: boolean
+  is_available: boolean;
 
   @Column({ default: false })
-  is_house_trained: boolean
+  is_house_trained: boolean;
 
   @Column()
-  health: string
+  health: string;
 
   @CreateDateColumn({ nullable: false })
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn({ nullable: false })
-  updated_at: Date
+  updated_at: Date;
 }

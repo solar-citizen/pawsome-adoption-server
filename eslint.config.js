@@ -1,10 +1,10 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import prettier from 'eslint-config-prettier'
-import nodePkg from 'eslint-plugin-node'
-import importPlugin from 'eslint-plugin-import'
-import tsEsLint from '@typescript-eslint/eslint-plugin'
-import tsEslintParser from '@typescript-eslint/parser'
+import js from '@eslint/js';
+import globals from 'globals';
+import prettier from 'eslint-config-prettier';
+import nodePkg from 'eslint-plugin-node';
+import importPlugin from 'eslint-plugin-import';
+import tsEsLint from '@typescript-eslint/eslint-plugin';
+import tsEslintParser from '@typescript-eslint/parser';
 
 export default [
   js.configs.recommended,
@@ -23,10 +23,13 @@ export default [
     },
     rules: {
       // node.js rules
-      'node/no-unsupported-features/es-syntax': ['error', {
-        version: '>=14.0.0',
-        ignores: [],
-      }],
+      'node/no-unsupported-features/es-syntax': [
+        'error',
+        {
+          version: '>=14.0.0',
+          ignores: [],
+        },
+      ],
       'node/no-missing-import': 'error',
       'node/no-extraneous-import': 'error',
 
@@ -35,12 +38,15 @@ export default [
       'import/named': 'error',
       'import/default': 'error',
       'import/namespace': 'error',
-      'import/order': ['error', {
-        'newlines-between': 'always',
-        'alphabetize': {
-          order: 'asc',
+      'import/order': [
+        'error',
+        {
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+          },
         },
-      }],
+      ],
 
       // js rules
       'no-console': 'warn',
@@ -58,10 +64,7 @@ export default [
       node: nodePkg,
       import: importPlugin,
     },
-    extends: [
-      'plugin:@typescript-eslint/recommended',
-      'prettier',
-    ],
+    extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'warn',
@@ -69,4 +72,4 @@ export default [
     },
   },
   prettier,
-]
+];

@@ -1,8 +1,8 @@
-const whitelist = process.env.CORS_ORIGINS.split('|')
+import { CORS_ORIGINS } from '#/shared/env'
 
 export const corsConfig = {
   origin(origin: string | undefined, callback: (arg0: Error, arg1?: boolean) => void): void {
-    if (!origin || whitelist.some(val => origin.match(val))) {
+    if (!origin || CORS_ORIGINS.some(val => origin.match(val))) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))

@@ -1,7 +1,8 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { constants } from '#/lib'
 
-const { pets } = constants.tables
+import { tables } from '#/shared/lib/constants'
+
+const { pets } = tables
 
 @Entity(pets)
 export class Pet {

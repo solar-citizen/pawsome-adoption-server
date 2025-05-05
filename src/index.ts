@@ -1,4 +1,4 @@
-import { logger } from '#/lib'
+import { logger } from '#/shared'
 
 import init from './server'
 

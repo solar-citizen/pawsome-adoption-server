@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { Pet } from '#/entities'
+
+import { Pet } from '#/shared/entities/Pet'
 
 export class PopulatePetsTable1742586592681 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

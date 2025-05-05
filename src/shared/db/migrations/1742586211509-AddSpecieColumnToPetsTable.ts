@@ -1,7 +1,8 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
-import { constants } from '#/lib'
 
-const { pets } = constants.tables
+import { tables } from '#/shared/lib/constants'
+
+const { pets } = tables
 
 export class AddSpecieColumnToPetsTable1742586211509 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

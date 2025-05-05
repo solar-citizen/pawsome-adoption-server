@@ -15,7 +15,7 @@ if (!migrationName) {
   process.exit(1)
 }
 
-const command = `ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate "./src/migrations/${migrationName}" -d ./src/config/dataSource.ts`
+const command = `ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate "./src/shared/db/migrations/${migrationName}" -d ./src/config/dataSource.ts`
 
 exec(command, (error, stdout, stderr) => {
   if (error) {

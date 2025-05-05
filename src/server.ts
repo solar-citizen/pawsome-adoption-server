@@ -1,13 +1,13 @@
-import express, { Express, Request, Response, NextFunction } from 'express'
 import cors from 'cors'
-import morgan from 'morgan'
+import express, { Express, Request, Response, NextFunction } from 'express'
 import helmet from 'helmet'
+import morgan from 'morgan'
 
 import { config } from 'dotenv'
 import { StatusCodes } from 'http-status-codes'
 
-import { corsConfig, AppDataSource } from '#/config'
-import { router } from '#/routes'
+import { router } from '#/api'
+import { corsConfig, AppDataSource } from '#/shared'
 
 config()
 

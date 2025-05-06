@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { tables } from '#/shared/lib/constants';
+import { tables } from '#src/shared/lib/constants';
 
 const { pets } = tables;
 

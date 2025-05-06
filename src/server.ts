@@ -5,8 +5,8 @@ import helmet from 'helmet';
 import { StatusCodes } from 'http-status-codes';
 import morgan from 'morgan';
 
-import { router } from '#/api';
-import { AppDataSource, corsConfig } from '#/shared';
+import { router } from '#src/api';
+import { AppDataSource, corsConfig } from '#src/shared';
 
 config();
 

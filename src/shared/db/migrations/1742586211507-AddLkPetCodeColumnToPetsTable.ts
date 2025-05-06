@@ -27,7 +27,7 @@ export class AddLkPetCodeColumnToPetsTable1742586211507 implements MigrationInte
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropIndex(pets, 'idx_pet_code');
-    await queryRunner.dropColumn(pets, 'pet_code');
+    await queryRunner.dropIndex(pets, 'idx_lk_pet_code');
+    await queryRunner.dropColumn(pets, 'lk_pet_code');
   }
 }

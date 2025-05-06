@@ -1,11 +1,33 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#/*": ["src/*"]
+    },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "lib": ["es2020"],
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "paths": {
-      "#/*": ["./src/*"]
-    }
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2024",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true
   },
-  "target": "ES6"
+  "include": ["src/**/*.ts", "tests/**/*.ts", "jest.setup.ts", "__mocks__"],
+  "exclude": ["src/public/", "node_modules", "dist"],
+  "ts-node": {
+    "files": true
+  }
 }

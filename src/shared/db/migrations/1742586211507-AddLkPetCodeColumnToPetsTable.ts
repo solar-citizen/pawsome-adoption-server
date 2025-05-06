@@ -1,7 +1,8 @@
-import { MigrationInterface, QueryRunner, TableColumn, TableIndex } from 'typeorm'
-import { constants } from '#/lib'
+import { MigrationInterface, QueryRunner, TableColumn, TableIndex } from 'typeorm';
 
-const { pets } = constants.tables
+import { tables } from '#/shared/lib/constants';
+
+const { pets } = tables;
 
 export class AddLkPetCodeColumnToPetsTable1742586211507 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -13,7 +14,7 @@ export class AddLkPetCodeColumnToPetsTable1742586211507 implements MigrationInte
         isNullable: false,
         isUnique: true,
       }),
-    )
+    );
 
     await queryRunner.createIndex(
       pets,
@@ -22,11 +23,11 @@ export class AddLkPetCodeColumnToPetsTable1742586211507 implements MigrationInte
         columnNames: ['lk_pet_code'],
         isUnique: true,
       }),
-    )
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropIndex(pets, 'idx_pet_code')
-    await queryRunner.dropColumn(pets, 'pet_code')
+    await queryRunner.dropIndex(pets, 'idx_lk_pet_code');
+    await queryRunner.dropColumn(pets, 'lk_pet_code');
   }
 }

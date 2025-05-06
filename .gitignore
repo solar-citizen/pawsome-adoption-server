@@ -15,3 +15,7 @@ benchmarks/graphs
 # Custom
 .env
 .idea
+logs
+
+# Build
+dist

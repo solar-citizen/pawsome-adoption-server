@@ -1,72 +1,109 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import prettier from 'eslint-config-prettier'
-import nodePkg from 'eslint-plugin-node'
-import importPlugin from 'eslint-plugin-import'
-import tsEsLint from '@typescript-eslint/eslint-plugin'
-import tsEslintParser from '@typescript-eslint/parser'
+import js from '@eslint/js';
+import ts from '@typescript-eslint/parser';
+import prettier from 'eslint-config-prettier';
+import esLintImport from 'eslint-plugin-import';
+import nodePkg from 'eslint-plugin-node';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import tsEslint from 'typescript-eslint';
 
-export default [
-  js.configs.recommended,
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-      ecmaVersion: 2024,
+const customRules = {
+  // eslint
+  'max-len': ['warn', { code: 100 }],
+  semi: [2, 'always'],
+
+  // eslint-plugin-simple-import-sort
+  'simple-import-sort/imports': 'error',
+  'simple-import-sort/exports': 'error',
+
+  // eslint-plugin-import
+  'import/first': 'error',
+  'import/newline-after-import': 'error',
+  'import/no-duplicates': 'error',
+  'import/max-dependencies': ['warn', { max: 10, ignoreTypeImports: true }],
+
+  // no-unused-vars
+  'no-unused-vars': 'off',
+
+  // '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-unused-vars': [
+    'warn',
+    {
+      argsIgnorePattern: '^_',
+    },
+  ],
+};
+
+const baseConfig = {
+  ignores: ['dist'],
+  linterOptions: {
+    reportUnusedDisableDirectives: true,
+  },
+};
+
+const jsConfig = {
+  ...js.configs.recommended,
+  files: ['**/*.js'],
+  languageOptions: {
+    globals: {
+      ...globals.node,
+    },
+    ecmaVersion: 2024,
+    sourceType: 'module',
+  },
+  plugins: {
+    node: nodePkg,
+    import: esLintImport,
+  },
+};
+
+const tsConfig = {
+  files: ['**/*.ts'],
+  languageOptions: {
+    parser: ts,
+    ecmaVersion: 2024,
+    globals: {
+      ...globals.node,
+    },
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: import.meta.dirname,
       sourceType: 'module',
     },
-    plugins: {
-      node: nodePkg,
-      import: importPlugin,
+  },
+  settings: {
+    react: {
+      version: 'detect',
     },
-    rules: {
-      // node.js rules
-      'node/no-unsupported-features/es-syntax': ['error', {
-        version: '>=14.0.0',
-        ignores: [],
-      }],
-      'node/no-missing-import': 'error',
-      'node/no-extraneous-import': 'error',
-
-      // import plugin rules
-      'import/no-unresolved': 'error',
-      'import/named': 'error',
-      'import/default': 'error',
-      'import/namespace': 'error',
-      'import/order': ['error', {
-        'newlines-between': 'always',
-        'alphabetize': {
-          order: 'asc',
+  },
+  plugins: {
+    node: nodePkg,
+    import: esLintImport,
+    'simple-import-sort': simpleImportSort,
+  },
+  rules: {
+    ...js.configs.recommended.rules,
+    ...prettier.rules,
+    ...customRules,
+    '@typescript-eslint/no-misused-promises': [
+      2,
+      {
+        checksVoidReturn: {
+          attributes: false,
         },
-      }],
-
-      // js rules
-      'no-console': 'warn',
-      'no-unused-vars': 'warn',
-    },
-  },
-  // ts override
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    languageOptions: {
-      parser: tsEslintParser,
-    },
-    plugins: {
-      '@typescript-eslint': tsEsLint,
-      node: nodePkg,
-      import: importPlugin,
-    },
-    extends: [
-      'plugin:@typescript-eslint/recommended',
-      'prettier',
+      },
     ],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-      '@typescript-eslint/strict-boolean-expressions': 'error',
-    },
   },
-  prettier,
-]
+};
+
+const tsTypeCheckedConfig = tsEslint.configs.strictTypeChecked.map(config => {
+  if (config.rules) {
+    return {
+      ...config,
+      files: ['**/*.{ts,tsx}'],
+    };
+  }
+  return config;
+});
+
+export default [baseConfig, jsConfig, tsConfig, ...tsTypeCheckedConfig];

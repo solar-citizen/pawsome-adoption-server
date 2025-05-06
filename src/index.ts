@@ -1,33 +1,19 @@
-import express = require('express')
-import cors = require('cors')
+import 'reflect-metadata';
 
-import { Request, Response, NextFunction } from 'express'
-import { config } from 'dotenv'
+import { Env, logger } from '#/shared';
 
-import { logger } from '#/middleware'
-import { router } from '#/routes'
-import { AppDataSource } from '#/config'
+import init from './server';
 
-config()
+const { appPort, nodeEnv } = Env;
 
-const app = express()
-
-app.use(cors())
-app.use(logger)
-app.use(express.json())
-app.use(router)
-
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack)
-  res.status(500).json({ error: 'Internal Server Error' })
-})
-
-const APP_PORT = process.env.APP_PORT
-
-AppDataSource.initialize()
-  .then(() => {
-    app.listen(APP_PORT, () => {
-      console.log(`Server running on port ${APP_PORT}`)
-    })
+init()
+  .then(app => {
+    app.listen(appPort, () => {
+      logger.info(`Server running on port ${appPort.toString()}`);
+      logger.info(`Environment: ${nodeEnv}`);
+    });
   })
-  .catch(error => console.log('Database connection error:', error))
+  .catch((error: unknown) => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  });

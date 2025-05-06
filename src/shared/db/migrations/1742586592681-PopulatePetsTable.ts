@@ -1,5 +1,6 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
-import { Pet } from '#/entities'
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { Pet } from '#/shared/entities/Pet';
 
 export class PopulatePetsTable1742586592681 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -184,9 +185,9 @@ export class PopulatePetsTable1742586592681 implements MigrationInterface {
         is_house_trained: true,
         health: 'Excellent health, requires special skin care',
       },
-    ]
+    ];
 
-    await queryRunner.manager.save(Pet, petData)
+    await queryRunner.manager.save(Pet, petData);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -211,8 +212,8 @@ export class PopulatePetsTable1742586592681 implements MigrationInterface {
       'P-21-03-2025-0018',
       'P-21-03-2025-0019',
       'P-21-03-2025-0020',
-    ]
+    ];
 
-    await Promise.all(petCodes.map(code => queryRunner.manager.delete(Pet, { lk_pet_code: code })))
+    await Promise.all(petCodes.map(code => queryRunner.manager.delete(Pet, { lk_pet_code: code })));
   }
 }

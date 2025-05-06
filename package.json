@@ -1,19 +1,20 @@
 {
   "name": "pawsome-adoption-server",
-  "version": "0.0.0",
+  "private": true,
+  "version": "0.0.5",
+  "author": "solar_c",
+  "license": "ISC",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --minify --sourcemap --outfile=dist/index.cjs",
+    "build:start": "node -r ts-node/register -r dotenv/config dist/index.cjs",
+    "dev": "tsx watch src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/config/dataSource.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true,
-  "keywords": [],
-  "author": "solar_c",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.4",
@@ -21,23 +22,35 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
+    "helmet": "^8.1.0",
+    "http-status-codes": "^2.3.0",
+    "morgan": "^1.10.0",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@types/cors": "^2.8.17",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/morgan": "^1.9.9",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
+    "esbuild": "^0.25.4",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.0.0",
+    "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.4",
+    "typescript-eslint": "^8.32.0"
   }
 }

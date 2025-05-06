@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { Env, logger } from '#/shared';
+import { Env, logger } from '#src/shared';
 
 import init from './server';
 

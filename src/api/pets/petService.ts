@@ -1,6 +1,6 @@
 import { ILike } from 'typeorm';
 
-import { AppDataSource, Pet } from '#/shared';
+import { AppDataSource, Pet } from '#src/shared';
 
 const petRepository = AppDataSource.getRepository(Pet);
 

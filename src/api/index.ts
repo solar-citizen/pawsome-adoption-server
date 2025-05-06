@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { routes } from '#/shared';
+import { routes } from '#src/shared';
 
 import { petRouter } from './pets/petRouter';
 

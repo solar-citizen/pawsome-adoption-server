@@ -1,4 +1,4 @@
-import Env from '#/shared/env';
+import Env from '#src/shared/env';
 
 const { corsOrigins } = Env;
 

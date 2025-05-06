@@ -1,19 +1,22 @@
 import { createLogger } from 'winston';
 
-import { LOG_DIR, LOG_LEVEL, NODE_ENV } from '#/shared/env';
+import Env from '#/shared/env';
 
-import { productionFormat, developmentFormat } from './formats';
-import { createErrorTransport, createCombinedTransport, consoleTransport } from './transports';
+import { developmentFormat, productionFormat } from './formats';
+import { consoleTransport, createCombinedTransport, createErrorTransport } from './transports';
 
-const format = NODE_ENV === 'production' ? productionFormat : developmentFormat;
+const { logConfig, nodeEnv } = Env;
+const { logLevel, logDir } = logConfig;
+
+const format = nodeEnv === 'production' ? productionFormat : developmentFormat;
 
 export const logger = createLogger({
-  level: LOG_LEVEL,
+  level: logLevel,
   format,
-  transports: [createErrorTransport(LOG_DIR), createCombinedTransport(LOG_DIR)],
+  transports: [createErrorTransport(logDir), createCombinedTransport(logDir)],
   exitOnError: false,
 });
 
-if (NODE_ENV !== 'production') {
+if (nodeEnv !== 'production') {
   logger.add(consoleTransport);
 }

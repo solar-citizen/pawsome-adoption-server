@@ -1,13 +1,12 @@
 import cors from 'cors';
-import express, { Express, Request, Response, NextFunction } from 'express';
+import { config } from 'dotenv';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
+import { StatusCodes } from 'http-status-codes';
 import morgan from 'morgan';
 
-import { config } from 'dotenv';
-import { StatusCodes } from 'http-status-codes';
-
 import { router } from '#/api';
-import { corsConfig, AppDataSource } from '#/shared';
+import { AppDataSource, corsConfig } from '#/shared';
 
 config();
 
@@ -39,6 +38,10 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
 });
+// app.use((err: Error, _req: Request, res: Response) => {
+//   console.error(err.stack);
+//   res.status(500).json({ error: 'Internal Server Error' });
+// });
 
 /**
  * Initialize the application asynchronously to ensure all required components (database, etc.) are

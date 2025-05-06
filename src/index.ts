@@ -1,18 +1,19 @@
-import { logger } from '#/shared';
+import 'reflect-metadata';
+
+import { Env, logger } from '#/shared';
 
 import init from './server';
 
-const port = process.env.APP_PORT;
-const env = process.env.NODE_ENV;
+const { appPort, nodeEnv } = Env;
 
 init()
   .then(app => {
-    app.listen(port, () => {
-      logger.info(`Server running on port ${port}`);
-      logger.info(`Environment: ${env}`);
+    app.listen(appPort, () => {
+      logger.info(`Server running on port ${appPort.toString()}`);
+      logger.info(`Environment: ${nodeEnv}`);
     });
   })
-  .catch(error => {
+  .catch((error: unknown) => {
     console.error('Failed to start server:', error);
     process.exit(1);
   });

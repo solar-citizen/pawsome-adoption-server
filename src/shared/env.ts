@@ -1,14 +1,23 @@
-import { config } from 'dotenv';
-config();
+import 'dotenv/config';
 
-export const DB_NAME = process.env.DB_NAME;
-export const DB_HOST = process.env.DB_HOST;
-export const DB_PASS = process.env.DB_PASS;
-export const DB_PORT = Number(process.env.DB_PORT);
-export const DB_USER = process.env.DB_USER;
+const Env = {
+  appPort: Number(process.env.APP_PORT),
+  nodeEnv: process.env.NODE_ENV || 'development',
 
-export const CORS_ORIGINS = process.env.CORS_ORIGINS.split('|');
+  corsOrigins: process.env.CORS_ORIGINS?.split('|') || [],
 
-export const LOG_DIR = process.env.LOG_DIR;
-export const LOG_LEVEL = process.env.LOG_LEVEL;
-export const NODE_ENV = process.env.NODE_ENV;
+  logConfig: {
+    logDir: process.env.LOG_DIR || 'logs',
+    logLevel: process.env.LOG_LEVEL || 'info',
+  },
+
+  dbConfig: {
+    database: process.env.DB_NAME || '',
+    host: process.env.DB_HOST || '',
+    password: process.env.DB_PASS || '',
+    port: Number(process.env.DB_PORT),
+    username: process.env.DB_USER || '',
+  },
+};
+
+export default Env;

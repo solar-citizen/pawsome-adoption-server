@@ -16,3 +16,6 @@ benchmarks/graphs
 .env
 .idea
 logs
+
+# Build
+dist

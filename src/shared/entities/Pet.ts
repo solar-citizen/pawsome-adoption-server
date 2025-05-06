@@ -12,33 +12,33 @@ const { pets } = tables;
 
 @Entity(pets)
 export class Pet {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
-  @Column({ length: 20, unique: true, nullable: false })
+  @Column({ type: 'varchar', length: 20, unique: true, nullable: false })
   lk_pet_code: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   breed: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   specie: string;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   is_available: boolean;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   is_house_trained: boolean;
 
-  @Column()
+  @Column({ type: 'varchar' })
   health: string;
 
-  @CreateDateColumn({ nullable: false })
+  @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 
-  @UpdateDateColumn({ nullable: false })
+  @UpdateDateColumn({ type: 'timestamptz', nullable: false })
   updated_at: Date;
 }

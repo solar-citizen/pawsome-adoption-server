@@ -1,7 +1,7 @@
+import 'winston-daily-rotate-file';
+
 import path from 'path';
 import { transports } from 'winston';
-
-import 'winston-daily-rotate-file';
 
 const { DailyRotateFile, Console } = transports;
 

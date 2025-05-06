@@ -1,18 +1,16 @@
-import { DataSource } from 'typeorm';
-
 import 'reflect-metadata';
 
-import { DB_NAME, DB_HOST, DB_PASS, DB_PORT, DB_USER } from '#/shared/env';
+import { DataSource } from 'typeorm';
+
 import { Pet } from '#/shared/entities/Pet';
+import Env from '#/shared/env';
+
+const { dbConfig, nodeEnv } = Env;
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  database: DB_NAME,
-  host: DB_HOST,
-  password: DB_PASS,
-  port: DB_PORT,
-  username: DB_USER,
+  ...dbConfig,
   entities: [Pet],
   logging: true,
-  migrations: ['src/shared/db/migrations/*.ts'],
+  migrations: [`src/shared/db/migrations/*.${nodeEnv === 'production' ? 'js' : 'ts'}`],
 });

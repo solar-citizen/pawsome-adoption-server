@@ -13,8 +13,8 @@ export const petController = {
     res.json(result);
   }),
 
-  addPet: asyncHandler(async (req: Request, res: Response) => {
-    const savedPet = await petService.createPet(req.body);
-    res.status(201).json(savedPet);
-  }),
+  // addPet: asyncHandler(async (req: Request, res: Response) => {
+  //   const savedPet = await petService.createPet(req.body);
+  //   res.status(201).json(savedPet);
+  // }),
 };

@@ -1,8 +1,10 @@
-import { CORS_ORIGINS } from '#/shared/env';
+import Env from '#/shared/env';
+
+const { corsOrigins } = Env;
 
 export const corsConfig = {
-  origin(origin: string | undefined, callback: (arg0: Error, arg1?: boolean) => void): void {
-    if (!origin || CORS_ORIGINS.some(val => origin.match(val))) {
+  origin(origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void): void {
+    if (!origin || corsOrigins.some(val => origin.match(val))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

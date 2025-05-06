@@ -8,7 +8,7 @@ export const productionFormat = combine(baseFormat, json());
 export const developmentFormat = combine(
   baseFormat,
   printf(({ level, message, timestamp, ...meta }) => {
-    return `[${timestamp}] - ${level.toUpperCase()} - ${message} ${
+    return `[${timestamp as string}] - ${level.toUpperCase()} - ${message as string} ${
       Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''
     }`;
   }),

@@ -2,6 +2,8 @@ import { ILike } from 'typeorm';
 
 import { AppDataSource, Pet } from '#src/shared';
 
+import type { CreatePetDto } from './dto/CreatePetDto';
+
 const petRepository = AppDataSource.getRepository(Pet);
 
 export const petService = {
@@ -40,7 +42,7 @@ export const petService = {
     };
   },
 
-  createPet: async (petData: Partial<Pet>) => {
+  createPet: async (petData: CreatePetDto) => {
     const pet = petRepository.create(petData);
     return await petRepository.save(pet);
   },

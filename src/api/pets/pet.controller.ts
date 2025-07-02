@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
-import { petService } from './petService';
+import { petService } from './pet.service';
 
 export const petController = {
   getPets: asyncHandler(async (req: Request, res: Response) => {
@@ -13,8 +13,8 @@ export const petController = {
     res.json(result);
   }),
 
-  // addPet: asyncHandler(async (req: Request, res: Response) => {
-  //   const savedPet = await petService.createPet(req.body);
-  //   res.status(201).json(savedPet);
-  // }),
+  createPet: asyncHandler(async (req: Request, res: Response) => {
+    const savedPet = await petService.createPet(req.body);
+    res.status(201).json(savedPet);
+  }),
 };

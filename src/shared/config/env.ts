@@ -1,8 +1,27 @@
 import 'dotenv/config';
 
-const Env = {
+import type { EnvType } from '#src/shared';
+
+type EnvConfig = {
+  appPort: number;
+  nodeEnv: EnvType;
+  corsOrigins: string[];
+  logConfig: {
+    logDir: string;
+    logLevel: string;
+  };
+  dbConfig: {
+    database: string;
+    host: string;
+    password: string;
+    port: number;
+    username: string;
+  };
+};
+
+const Env: EnvConfig = {
   appPort: Number(process.env.APP_PORT),
-  nodeEnv: process.env.NODE_ENV || 'development',
+  nodeEnv: (process.env.NODE_ENV || 'development') as EnvType,
 
   corsOrigins: process.env.CORS_ORIGINS?.split('|') || [],
 

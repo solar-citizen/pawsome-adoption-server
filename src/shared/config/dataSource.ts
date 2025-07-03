@@ -2,7 +2,9 @@ import 'reflect-metadata';
 
 import { DataSource } from 'typeorm';
 
-import { Env, paths, Pet } from '#src/shared';
+import Env from '#src/shared/config/env';
+import { Pet } from '#src/shared/entities/Pet';
+import { paths } from '#src/shared/lib/constants';
 
 const { dbConfig, nodeEnv } = Env;
 const { migrations } = paths;

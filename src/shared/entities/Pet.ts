@@ -27,11 +27,17 @@ export class Pet {
   @Column({ type: 'varchar', nullable: false })
   specie: string;
 
+  @Column({ type: 'varchar', nullable: false })
+  sex_txt: string;
+
   @Column({ type: 'boolean', default: false })
   is_available: boolean;
 
   @Column({ type: 'boolean', default: false })
   is_house_trained: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  is_sterilized_flg: boolean;
 
   @Column({ type: 'varchar' })
   health: string;

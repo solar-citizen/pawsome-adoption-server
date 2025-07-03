@@ -1,6 +1,6 @@
 import { createLogger } from 'winston';
 
-import Env from '#src/shared/env';
+import Env from '#src/shared/config/env';
 
 import { developmentFormat, productionFormat } from './formats';
 import { consoleTransport, createCombinedTransport, createErrorTransport } from './transports';

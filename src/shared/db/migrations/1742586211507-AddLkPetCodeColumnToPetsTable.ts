@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableColumn, TableIndex } from 'typeorm';
+import { type MigrationInterface, type QueryRunner, TableColumn, TableIndex } from 'typeorm';
 
 import { tables } from '#src/shared/lib/constants';
 

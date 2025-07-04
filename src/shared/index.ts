@@ -1,10 +1,12 @@
 import { corsConfig } from './config/cors';
 import { AppDataSource } from './config/dataSource';
 import Env from './config/env';
-import { Pet } from './entities/Pet';
-import { paths, routes, tables } from './lib/constants';
+import { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet } from './entities/pets';
+import { mViews, paths, routes, tables } from './lib/constants';
 import { logger } from './lib/logger';
 import type { EnvType } from './lib/types';
 
-export { AppDataSource, corsConfig, Env, logger, paths, Pet, routes, tables };
+export { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet };
+export { AppDataSource, corsConfig, Env, logger, mViews, paths, routes, tables };
+
 export type { EnvType };

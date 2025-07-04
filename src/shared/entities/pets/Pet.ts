@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails } from '#src/shared';
 import { tables } from '#src/shared/lib/constants';
 
 const { pets } = tables;
@@ -34,9 +36,6 @@ export class Pet {
   is_available: boolean;
 
   @Column({ type: 'boolean', default: false })
-  is_house_trained: boolean;
-
-  @Column({ type: 'boolean', default: false })
   is_sterilized_flg: boolean;
 
   @Column({ type: 'varchar' })
@@ -47,4 +46,17 @@ export class Pet {
 
   @UpdateDateColumn({ type: 'timestamptz', nullable: false })
   updated_at: Date;
+
+  // Relations
+  @OneToOne(() => DogDetails, dogDetails => dogDetails.pet, { cascade: true })
+  dogDetails?: DogDetails;
+
+  @OneToOne(() => CatDetails, catDetails => catDetails.pet, { cascade: true })
+  catDetails?: CatDetails;
+
+  @OneToOne(() => HorseDetails, horseDetails => horseDetails.pet, { cascade: true })
+  horseDetails?: HorseDetails;
+
+  @OneToOne(() => FarmAnimalDetails, farmAnimalDetails => farmAnimalDetails.pet, { cascade: true })
+  farmAnimalDetails?: FarmAnimalDetails;
 }

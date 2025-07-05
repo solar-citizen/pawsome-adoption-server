@@ -2,15 +2,24 @@ import 'reflect-metadata';
 
 import { DataSource } from 'typeorm';
 
-import { Pet } from '#src/shared/entities/Pet';
-import Env from '#src/shared/env';
+import Env from '#src/shared/config/env';
+import {
+  CatDetails,
+  DogDetails,
+  FarmAnimalDetails,
+  HorseDetails,
+  Pet,
+  PetWithDetails,
+} from '#src/shared/entities';
+import { paths } from '#src/shared/lib/constants';
 
 const { dbConfig, nodeEnv } = Env;
+const { migrations } = paths;
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   ...dbConfig,
-  entities: [Pet],
+  entities: [CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet, PetWithDetails],
   logging: true,
-  migrations: [`src/shared/db/migrations/*.${nodeEnv === 'production' ? 'js' : 'ts'}`],
+  migrations: [nodeEnv === 'production' ? migrations.prod : migrations.local],
 });

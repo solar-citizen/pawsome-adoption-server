@@ -1,8 +1,45 @@
 import { corsConfig } from './config/cors';
 import { AppDataSource } from './config/dataSource';
-import { Pet } from './entities/Pet';
-import Env from './env';
-import { routes, tables } from './lib/constants';
-import { logger } from './lib/logger';
+import Env from './config/env';
+import {
+  CatDetails,
+  DogDetails,
+  FarmAnimalDetails,
+  HorseDetails,
+  Pet,
+  PetWithDetails,
+} from './entities/pets';
+import {
+  buildPaginationMeta,
+  type EnvType,
+  extractPaginationParams,
+  extractStringParam,
+  isString,
+  logger,
+  mViews,
+  parsePositiveInt,
+  paths,
+  routes,
+  tables,
+  withPagination,
+} from './lib';
 
-export { AppDataSource, corsConfig, Env, logger, Pet, routes, tables };
+export { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet, PetWithDetails };
+export {
+  AppDataSource,
+  buildPaginationMeta,
+  corsConfig,
+  Env,
+  extractPaginationParams,
+  extractStringParam,
+  isString,
+  logger,
+  mViews,
+  parsePositiveInt,
+  paths,
+  routes,
+  tables,
+  withPagination,
+};
+
+export type { EnvType };

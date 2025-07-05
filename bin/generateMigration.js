@@ -4,19 +4,17 @@ import { exec } from 'child_process';
 /*
  * Run with:
  * node bin/generateMigration.js {MigrationName}
- *
- * Replace queryRunner.query() with proper command
  */
 
 const migrationName = process.argv[2];
 
 if (!migrationName) {
-  console.error('Usage: node generateMigration.js <MigrationName>');
+  console.error('Usage: node bin/generateMigration.js <MigrationName>');
   process.exit(1);
 }
 
-const command = `ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js
-  migration:generate "./src/shared/db/migrations/${migrationName}" -d ./src/config/dataSource.ts`;
+const command = `npx tsx ./node_modules/typeorm/cli.js migration:generate \
+ "./src/shared/db/migrations/${migrationName}" -d ./src/shared/config/dataSource.ts`;
 
 exec(command, (error, stdout, stderr) => {
   if (error) {

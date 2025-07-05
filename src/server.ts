@@ -1,6 +1,6 @@
 import cors from 'cors';
 import { config } from 'dotenv';
-import express, { Express, NextFunction, Request, Response } from 'express';
+import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
 import { StatusCodes } from 'http-status-codes';
 import morgan from 'morgan';

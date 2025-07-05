@@ -1,46 +1,26 @@
 import { fromZodError } from 'zod-validation-error';
 
-import { AppDataSource, Pet } from '#src/shared';
+import { AppDataSource, Pet, PetWithDetails } from '#src/shared';
 
+import { getPaginatedPets } from './lib/getPaginatedPets';
 import { PetSchema } from './pet.schema';
 
 const petRepository = AppDataSource.getRepository(Pet);
+const petWithDetailsRepository = AppDataSource.getRepository(PetWithDetails);
 
 export const petService = {
   /**
-   * Get paginated pets with optional filtering
+   * Get paginated pets with optional filtering from materialized view
    */
   getPaginatedPets: async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
-    const offset = (page - 1) * limit;
+    return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
+  },
 
-    const qb = petRepository.createQueryBuilder('pet');
-
-    if (fullTextSearch) {
-      const query = `%${fullTextSearch}%`;
-      qb.where('pet.name ILIKE :query', { query })
-        .orWhere('pet.breed ILIKE :query', { query })
-        .orWhere('pet.specie ILIKE :query', { query });
-    }
-
-    qb.skip(offset).take(limit).orderBy('pet.lk_pet_code', 'ASC');
-
-    const [pets, petsTotal] = await qb.getManyAndCount();
-
-    const petsFrom = petsTotal > 0 ? offset + 1 : 0;
-    const petsTo = petsTotal > 0 ? Math.min(offset + limit, petsTotal) : 0;
-    const lastPage = Math.max(Math.ceil(petsTotal / limit), 1);
-
-    return {
-      data: pets,
-      meta: {
-        currentPage: page,
-        perPage: limit,
-        lastPage,
-        petsFrom,
-        petsTo,
-        petsTotal,
-      },
-    };
+  /**
+   * Get paginated pets with optional filtering from the table
+   */
+  getPaginatedPetsRaw: async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
+    return getPaginatedPets(petRepository, 'pet', page, limit, fullTextSearch);
   },
 
   createPet: async (petData: unknown): Promise<Pet> => {

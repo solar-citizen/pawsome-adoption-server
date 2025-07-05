@@ -1,15 +1,18 @@
 import type { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
+import { withPagination } from '#src/shared';
+
 import { petService } from './pet.service';
 
 export const petController = {
   getPets: asyncHandler(async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const fullTextSearch = req.query.full_text_search || null;
+    const result = await withPagination(req, petService.getPaginatedPets);
+    res.json(result);
+  }),
 
-    const result = await petService.getPaginatedPets(page, limit, fullTextSearch as string);
+  getPetsRaw: asyncHandler(async (req: Request, res: Response) => {
+    const result = await withPagination(req, petService.getPaginatedPetsRaw);
     res.json(result);
   }),
 

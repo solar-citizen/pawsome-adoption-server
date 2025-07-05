@@ -37,16 +37,16 @@ export class PetWithDetails {
 
   // Cat Details
   @ViewColumn()
-  is_litter_trained: boolean;
+  cat_is_litter_trained: boolean;
 
   @ViewColumn()
-  is_indoor_only: boolean;
+  cat_is_indoor_only: boolean;
 
   @ViewColumn()
-  is_declawed: boolean;
+  cat_is_declawed: boolean;
 
   @ViewColumn()
-  personality_type: string;
+  cat_personality_type: string;
 
   @ViewColumn()
   cat_good_with_children: boolean;

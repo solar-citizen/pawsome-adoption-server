@@ -7,12 +7,10 @@ import { petService } from './pet.service';
 
 export const petController = {
   getPets: asyncHandler(async (req: Request, res: Response) => {
-    const result = await withPagination(req, petService.getPaginatedPets);
-    res.json(result);
-  }),
-
-  getPetsRaw: asyncHandler(async (req: Request, res: Response) => {
-    const result = await withPagination(req, petService.getPaginatedPetsRaw);
+    const result =
+      req.query.detailed === 'true'
+        ? await withPagination(req, petService.getPaginatedPetsWithDetails)
+        : await withPagination(req, petService.getPaginatedPets);
     res.json(result);
   }),
 

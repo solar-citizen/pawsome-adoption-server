@@ -10,17 +10,23 @@ const petWithDetailsRepository = AppDataSource.getRepository(PetWithDetails);
 
 export const petService = {
   /**
-   * Get paginated pets with optional filtering from materialized view
+   * Get paginated pets with optional filtering from the table
+   * for general usage
    */
   getPaginatedPets: async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
-    return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
+    return getPaginatedPets(petRepository, 'pet', page, limit, fullTextSearch);
   },
 
   /**
-   * Get paginated pets with optional filtering from the table
+   * Get paginated pets with optional filtering from materialized view
+   * mainly for reports
    */
-  getPaginatedPetsRaw: async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
-    return getPaginatedPets(petRepository, 'pet', page, limit, fullTextSearch);
+  getPaginatedPetsWithDetails: async (
+    page = 1,
+    limit = 10,
+    fullTextSearch: string | null = null,
+  ) => {
+    return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
   },
 
   createPet: async (petData: unknown): Promise<Pet> => {

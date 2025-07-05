@@ -4,9 +4,9 @@ import { petController } from './pet.controller';
 
 const petRouter = Router();
 
-const { getPets, createPet } = petController;
+const { createPet, getPets } = petController;
 
 petRouter.get('/pets', getPets);
-petRouter.post('/pets/add', createPet);
+petRouter.post('/pets', createPet);
 
 export { petRouter };

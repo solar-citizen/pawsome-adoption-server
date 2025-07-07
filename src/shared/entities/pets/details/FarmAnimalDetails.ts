@@ -8,13 +8,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Pet } from '#src/shared';
+import { type IFarmAnimalDetails, type IPet, Pet } from '#src/shared';
 import { tables } from '#src/shared/lib/constants';
 
 const { farmAnimalsDetails } = tables;
 
 @Entity(farmAnimalsDetails)
-export class FarmAnimalDetails {
+export class FarmAnimalDetails implements IFarmAnimalDetails {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
@@ -68,5 +68,5 @@ export class FarmAnimalDetails {
 
   @OneToOne(() => Pet, pet => pet.farmAnimalDetails)
   @JoinColumn({ name: 'pet_id' })
-  pet: Pet;
+  pet: IPet;
 }

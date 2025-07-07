@@ -8,40 +8,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Pet } from '#src/shared';
+import {
+  type EnergyLevel,
+  type IDogDetails,
+  type IPet,
+  Pet,
+  type TrainingLevel,
+} from '#src/shared';
 import { tables } from '#src/shared/lib/constants';
 
 const { dogDetails } = tables;
 
-export type DogDetailsType = {
-  id: number;
-  pet_id: number;
-  lk_pet_code: string;
-  is_house_trained: boolean;
-  training_level: TrainingLevel | null;
-  good_with_children: boolean;
-  good_with_other_dogs: boolean;
-  good_with_cats: boolean;
-  energy_level: EnergyLevel | null;
-  exercise_needs_minutes: number | null;
-  created_at: Date;
-  updated_at: Date;
-  pet: Pet;
-};
-export type TrainingLevel = 'basic' | 'intermediate' | 'advanced';
-export type EnergyLevel = 'low' | 'moderate' | 'high' | 'very_high';
-export type CreateDogDetailsInput = Omit<
-  DogDetailsType,
-  'id' | 'created_at' | 'updated_at' | 'pet'
->;
-export type UpdateDogDetailsInput = Partial<
-  Omit<DogDetailsType, 'id' | 'created_at' | 'updated_at' | 'pet'>
-> & {
-  id: number;
-};
-
 @Entity(dogDetails)
-export class DogDetails implements DogDetailsType {
+export class DogDetails implements IDogDetails {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
@@ -92,5 +71,5 @@ export class DogDetails implements DogDetailsType {
 
   @OneToOne(() => Pet, pet => pet.dogDetails)
   @JoinColumn({ name: 'pet_id' })
-  pet: Pet;
+  pet: IPet;
 }

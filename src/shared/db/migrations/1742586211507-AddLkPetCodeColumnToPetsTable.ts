@@ -4,7 +4,7 @@ export class AddLkPetCodeColumnToPetsTable1742586211507 implements MigrationInte
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE pets
-      ADD COLUMN lk_pet_code VARCHAR(20) NOT NULL;
+      ADD COLUMN lk_pet_code VARCHAR(17) NOT NULL;
     `);
     await queryRunner.query(`
       CREATE UNIQUE INDEX idx_lk_pet_code

@@ -15,16 +15,38 @@ import {
   extractPaginationParams,
   extractStringParam,
   isString,
+  LK_PET_CODE_LENGTH,
   logger,
   mViews,
   parsePositiveInt,
   paths,
   routes,
   tables,
+  unionValues,
   withPagination,
 } from './lib';
+import type {
+  EnergyLevel,
+  ICatDetails,
+  IDogDetails,
+  IFarmAnimalDetails,
+  IHorseDetails,
+  IPet,
+  Specie,
+  TrainingLevel,
+} from './types';
 
 export { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet, PetWithDetails };
+export type {
+  EnergyLevel,
+  ICatDetails,
+  IDogDetails,
+  IFarmAnimalDetails,
+  IHorseDetails,
+  IPet,
+  Specie,
+  TrainingLevel,
+};
 export {
   AppDataSource,
   buildPaginationMeta,
@@ -33,13 +55,14 @@ export {
   extractPaginationParams,
   extractStringParam,
   isString,
+  LK_PET_CODE_LENGTH,
   logger,
   mViews,
   parsePositiveInt,
   paths,
   routes,
   tables,
+  unionValues,
   withPagination,
 };
-
 export type { EnvType };

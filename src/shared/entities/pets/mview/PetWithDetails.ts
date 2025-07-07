@@ -1,5 +1,7 @@
 import { ViewColumn, ViewEntity } from 'typeorm';
 
+import type { EnergyLevel, Specie, TrainingLevel } from '#src/shared';
+
 @ViewEntity('pets_with_details')
 export class PetWithDetails {
   @ViewColumn()
@@ -15,19 +17,22 @@ export class PetWithDetails {
   breed: string;
 
   @ViewColumn()
-  specie: string;
+  specie: Specie;
 
   @ViewColumn()
   sex_txt: string;
+
+  @ViewColumn()
+  special_needs: string;
+
+  @ViewColumn()
+  health: string;
 
   @ViewColumn()
   is_available: boolean;
 
   @ViewColumn()
   is_sterilized_flg: boolean;
-
-  @ViewColumn()
-  health: string;
 
   @ViewColumn()
   created_at: Date;
@@ -65,7 +70,7 @@ export class PetWithDetails {
   dog_is_house_trained: boolean;
 
   @ViewColumn()
-  dog_training_level: string;
+  dog_training_level: TrainingLevel;
 
   @ViewColumn()
   dog_good_with_children: boolean;
@@ -77,7 +82,7 @@ export class PetWithDetails {
   dog_good_with_cats: boolean;
 
   @ViewColumn()
-  dog_energy_level: string;
+  dog_energy_level: EnergyLevel;
 
   @ViewColumn()
   dog_exercise_needs: number;

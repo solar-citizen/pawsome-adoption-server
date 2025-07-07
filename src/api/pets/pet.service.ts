@@ -1,6 +1,6 @@
 import { fromZodError } from 'zod-validation-error';
 
-import { AppDataSource, Pet, PetWithDetails } from '#src/shared';
+import { AppDataSource, IPet, Pet, PetWithDetails } from '#src/shared';
 
 import { getPaginatedPets } from './lib/getPaginatedPets';
 import { PetSchema } from './pet.schema';
@@ -29,7 +29,7 @@ export const petService = {
     return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
   },
 
-  createPet: async (petData: unknown): Promise<Pet> => {
+  createPet: async (petData: unknown): Promise<IPet> => {
     const result = PetSchema.create.safeParse(petData);
     const { success, error, data } = result;
 

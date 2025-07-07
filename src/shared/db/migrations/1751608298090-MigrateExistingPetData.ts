@@ -17,7 +17,7 @@ export class MigrateExistingPetData1751608298090 implements MigrationInterface {
       SELECT
         p.id,
         p.lk_pet_code,
-        COALESCE(is_house_trained, FALSE),
+        is_house_trained,
         'basic',
         TRUE,
         TRUE,
@@ -25,7 +25,7 @@ export class MigrateExistingPetData1751608298090 implements MigrationInterface {
         'moderate',
         60
       FROM pets AS p
-      WHERE LOWER(specie) = 'dog';
+      WHERE specie = 'dog';
     `);
 
     await queryRunner.query(`
@@ -44,7 +44,7 @@ export class MigrateExistingPetData1751608298090 implements MigrationInterface {
       SELECT
         p.id,
         p.lk_pet_code,
-        COALESCE(is_house_trained, FALSE),
+        is_house_trained,
         FALSE,
         FALSE,
         'calms',
@@ -53,7 +53,7 @@ export class MigrateExistingPetData1751608298090 implements MigrationInterface {
         FALSE,
         FALSE
       FROM pets AS p
-      WHERE LOWER(specie) = 'cat';
+      WHERE specie = 'cat';
     `);
   }
 

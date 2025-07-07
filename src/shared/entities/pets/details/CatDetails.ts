@@ -8,13 +8,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Pet } from '#src/shared';
+import { type ICatDetails, type IPet, Pet } from '#src/shared';
 import { tables } from '#src/shared/lib/constants';
 
 const { catDetails } = tables;
 
 @Entity(catDetails)
-export class CatDetails {
+export class CatDetails implements ICatDetails {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
@@ -60,5 +60,5 @@ export class CatDetails {
 
   @OneToOne(() => Pet, pet => pet.catDetails)
   @JoinColumn({ name: 'pet_id' })
-  pet: Pet;
+  pet: IPet;
 }

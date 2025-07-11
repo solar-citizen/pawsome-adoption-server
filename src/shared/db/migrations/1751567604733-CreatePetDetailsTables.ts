@@ -7,7 +7,7 @@ export class CreatePetDetailsTables1751567604733 implements MigrationInterface {
       CREATE TABLE cat_details (
         id SERIAL PRIMARY KEY,
         pet_id INT NOT NULL,
-        lk_pet_code VARCHAR(20),
+        lk_pet_code VARCHAR(17),
         is_litter_trained BOOLEAN NOT NULL DEFAULT FALSE,
         is_indoor_only   BOOLEAN NOT NULL DEFAULT FALSE,
         is_declawed      BOOLEAN NOT NULL DEFAULT FALSE,
@@ -36,7 +36,7 @@ export class CreatePetDetailsTables1751567604733 implements MigrationInterface {
       CREATE TABLE dog_details (
         id SERIAL PRIMARY KEY,
         pet_id INT NOT NULL,
-        lk_pet_code VARCHAR(20),
+        lk_pet_code VARCHAR(17),
         is_house_trained BOOLEAN NOT NULL DEFAULT FALSE,
         training_level   VARCHAR(50),
         good_with_children BOOLEAN NOT NULL DEFAULT FALSE,
@@ -64,7 +64,7 @@ export class CreatePetDetailsTables1751567604733 implements MigrationInterface {
       CREATE TABLE horse_details (
         id SERIAL PRIMARY KEY,
         pet_id INT NOT NULL,
-        lk_pet_code VARCHAR(20),
+        lk_pet_code VARCHAR(17),
         is_saddle_trained BOOLEAN NOT NULL DEFAULT FALSE,
         is_ground_trained BOOLEAN NOT NULL DEFAULT FALSE,
         riding_level     VARCHAR(50),
@@ -93,7 +93,7 @@ export class CreatePetDetailsTables1751567604733 implements MigrationInterface {
       CREATE TABLE farm_animals_details (
         id SERIAL PRIMARY KEY,
         pet_id INT NOT NULL,
-        lk_pet_code VARCHAR(20),
+        lk_pet_code VARCHAR(17),
         is_fence_trained BOOLEAN NOT NULL DEFAULT FALSE,
         primary_purpose VARCHAR(50),
         requires_special_housing BOOLEAN NOT NULL DEFAULT FALSE,

@@ -1,9 +1,20 @@
+import { z, ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
-import { AppDataSource, Pet, PetWithDetails } from '#src/shared';
+import {
+  AppDataSource,
+  ICatDetails,
+  IDogDetails,
+  IFarmAnimalDetails,
+  IHorseDetails,
+  IPet,
+  Pet,
+  PetWithDetails,
+} from '#src/shared';
 
 import { getPaginatedPets } from './lib/getPaginatedPets';
-import { PetSchema } from './pet.schema';
+import { processUploadedFilesWithRepos } from './lib/processUploadedFiles';
+import { PetCreateSchema } from './pet.schema';
 
 const petRepository = AppDataSource.getRepository(Pet);
 const petWithDetailsRepository = AppDataSource.getRepository(PetWithDetails);
@@ -29,15 +40,34 @@ export const petService = {
     return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
   },
 
-  createPet: async (petData: unknown): Promise<Pet> => {
-    const result = PetSchema.create.safeParse(petData);
-    const { success, error, data } = result;
+  /**
+   * Creates a new pet with optional file uploads (photos and documents).
+   *
+   * @param {unknown} petData
+   * Raw pet data to be validated and processed. Must conform to PetCreateSchema
+   * @param {Express.Multer.File[] | null} files
+   * Array of uploaded files (photos/documents) or null if no files
+   * @returns {Promise<IPet>}
+   * Promise that resolves to the created pet entity with generated thumbnails
+   * @throws {Error} Throws validation error if petData doesn't match PetCreateSchema
+   * @throws {Error} Throws database or file processing errors during pet creation
+   */
+  createPet: async (petData: unknown, files: Express.Multer.File[] | null): Promise<IPet> => {
+    let dataTyped: z.infer<typeof PetCreateSchema>;
 
-    if (!success) {
-      throw new Error(fromZodError(error).toString());
+    try {
+      dataTyped = PetCreateSchema.parse(petData);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new Error(fromZodError(error).toString());
+      }
+      throw error;
     }
 
-    const pet = petRepository.create(data);
-    return await petRepository.save(pet);
+    return await processUploadedFilesWithRepos(
+      petRepository,
+      dataTyped as Partial<IPet> & (ICatDetails | IDogDetails | IFarmAnimalDetails | IHorseDetails),
+      files,
+    );
   },
 };

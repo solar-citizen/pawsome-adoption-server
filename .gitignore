@@ -19,3 +19,6 @@ logs
 
 # Build
 dist
+
+# Uploads
+uploads

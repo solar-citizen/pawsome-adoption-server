@@ -8,13 +8,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Pet } from '#src/shared';
+import { type IHorseDetails, type IPet, Pet } from '#src/shared';
 import { tables } from '#src/shared/lib/constants';
 
 const { horseDetails } = tables;
 
 @Entity(horseDetails)
-export class HorseDetails {
+export class HorseDetails implements IHorseDetails {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
@@ -70,6 +70,12 @@ export class HorseDetails {
   @Column({ type: 'boolean', default: false })
   suitable_for_beginners: boolean;
 
+  @Column({ type: 'jsonb', nullable: true })
+  files: {
+    photos: string[];
+    documents: string[];
+  } | null;
+
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 
@@ -78,5 +84,5 @@ export class HorseDetails {
 
   @OneToOne(() => Pet, pet => pet.horseDetails)
   @JoinColumn({ name: 'pet_id' })
-  pet: Pet;
+  pet: IPet;
 }

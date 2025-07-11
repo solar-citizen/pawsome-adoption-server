@@ -1,6 +1,7 @@
 import { corsConfig } from './config/cors';
 import { AppDataSource } from './config/dataSource';
 import Env from './config/env';
+import { getRepository, withTransaction } from './db/repositoryUtils';
 import {
   CatDetails,
   DogDetails,
@@ -11,35 +12,82 @@ import {
 } from './entities/pets';
 import {
   buildPaginationMeta,
+  clamp,
   type EnvType,
   extractPaginationParams,
   extractStringParam,
   isString,
+  LK_PET_CODE_LENGTH,
   logger,
+  multerUtils,
   mViews,
   parsePositiveInt,
   paths,
   routes,
   tables,
+  unionValues,
   withPagination,
 } from './lib';
+import { cleanupFiles, limiter, processImage, uploadConfig } from './middleware';
+import type {
+  EnergyLevel,
+  IAdopter,
+  ICatDetails,
+  IDogDetails,
+  IFarmAnimalDetails,
+  IHorseDetails,
+  IPet,
+  IPetFiles,
+  ISpeciesDetailsData,
+  MulterFilesObject,
+  Specie,
+  TrainingLevel,
+} from './types';
 
-export { CatDetails, DogDetails, FarmAnimalDetails, HorseDetails, Pet, PetWithDetails };
+export type {
+  EnergyLevel,
+  EnvType,
+  IAdopter,
+  ICatDetails,
+  IDogDetails,
+  IFarmAnimalDetails,
+  IHorseDetails,
+  IPet,
+  IPetFiles,
+  ISpeciesDetailsData,
+  MulterFilesObject,
+  Specie,
+  TrainingLevel,
+};
 export {
   AppDataSource,
   buildPaginationMeta,
+  CatDetails,
+  clamp,
+  cleanupFiles,
   corsConfig,
+  DogDetails,
   Env,
   extractPaginationParams,
   extractStringParam,
+  FarmAnimalDetails,
+  getRepository,
+  HorseDetails,
   isString,
+  limiter,
+  LK_PET_CODE_LENGTH,
   logger,
+  multerUtils,
   mViews,
   parsePositiveInt,
   paths,
+  Pet,
+  PetWithDetails,
+  processImage,
   routes,
   tables,
+  unionValues,
+  uploadConfig,
   withPagination,
+  withTransaction,
 };
-
-export type { EnvType };

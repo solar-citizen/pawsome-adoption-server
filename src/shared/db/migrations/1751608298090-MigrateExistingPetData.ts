@@ -47,7 +47,7 @@ export class MigrateExistingPetData1751608298090 implements MigrationInterface {
         is_house_trained,
         FALSE,
         FALSE,
-        'calms',
+        'calm',
         TRUE,
         TRUE,
         FALSE,

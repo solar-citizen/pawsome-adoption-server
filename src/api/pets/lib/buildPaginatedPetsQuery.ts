@@ -31,7 +31,10 @@ export async function buildPaginatedPetsQuery<T extends Pet | PetWithDetails>(
       .orWhere(`${alias}.specie ILIKE :query`, { query });
   }
 
-  qb.skip(offset).take(limit).orderBy(`${alias}.lk_pet_code`, 'ASC');
+  qb.skip(offset)
+    .take(limit)
+    .orderBy(`${alias}.created_at`, 'DESC')
+    .addOrderBy(`${alias}.lk_pet_code`, 'ASC');
 
   const [pets, petsTotal] = await qb.getManyAndCount();
 

@@ -52,6 +52,12 @@ export class CatDetails implements ICatDetails {
   @Column({ type: 'boolean', default: false })
   needs_special_diet: boolean;
 
+  @Column({ type: 'jsonb', nullable: true })
+  files: {
+    photos: string[];
+    documents: string[];
+  } | null;
+
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 

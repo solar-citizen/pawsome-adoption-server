@@ -52,6 +52,9 @@ export class Pet implements IPet {
   @Column({ type: 'varchar', length: 255 })
   health: string | null;
 
+  @Column({ type: 'jsonb' })
+  thumbnails: Record<'800x600' | '640x480' | '400x300', string[]> | null;
+
   @Column({ type: 'boolean', default: false, nullable: false })
   is_available: boolean;
 

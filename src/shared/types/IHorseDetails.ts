@@ -1,4 +1,4 @@
-import type { IPet } from '#src/shared';
+import type { IPet, IPetFiles } from '#src/shared';
 
 export type IHorseDetails = {
   id: number;
@@ -12,6 +12,7 @@ export type IHorseDetails = {
   discipline: string;
   temperament: string;
   suitable_for_beginners: boolean;
+  files: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
   pet?: IPet;

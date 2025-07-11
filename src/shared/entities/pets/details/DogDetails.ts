@@ -63,6 +63,12 @@ export class DogDetails implements IDogDetails {
   })
   exercise_needs_minutes: number;
 
+  @Column({ type: 'jsonb', nullable: true })
+  files: {
+    photos: string[];
+    documents: string[];
+  } | null;
+
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 

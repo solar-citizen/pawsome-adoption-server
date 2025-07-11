@@ -1,3 +1,4 @@
+import { cleanupFiles, processImage, uploadConfig } from './imgUpload';
 import { limiter } from './rate-limit';
 
-export { limiter };
+export { cleanupFiles, limiter, processImage, uploadConfig };

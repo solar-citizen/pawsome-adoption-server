@@ -15,6 +15,7 @@ export type IPet = {
   sex_txt: string;
   special_needs: string | null;
   health: string | null;
+  thumbnails: Record<'800x600' | '640x480' | '400x300', string[]> | null;
   is_available: boolean;
   is_sterilized_flg: boolean;
   created_at: Date;
@@ -26,6 +27,12 @@ export type IPet = {
 };
 
 export type Specie = (typeof unionValues.SPECIES)[number];
+
+// Shared types
+export type IPetFiles = {
+  photos?: string[];
+  documents?: string[];
+};
 
 // Mixed types
 export type IPetWithDogDetails = IPet & {
@@ -49,3 +56,25 @@ export type IPetWithDetails =
   | IPetWithCatDetails
   | IPetWithHorseDetails
   | IPetWithFarmAnimalDetails;
+
+/**
+ * Possible detail payloads for each species.
+ */
+export type ISpeciesDetailsData = {
+  catDetails?: Omit<
+    ICatDetails,
+    'id' | 'lk_pet_code' | 'pet_id' | 'created_at' | 'updated_at' | 'pet'
+  >;
+  dogDetails?: Omit<
+    IDogDetails,
+    'id' | 'lk_pet_code' | 'pet_id' | 'created_at' | 'updated_at' | 'pet'
+  >;
+  horseDetails?: Omit<
+    IHorseDetails,
+    'id' | 'lk_pet_code' | 'pet_id' | 'created_at' | 'updated_at' | 'pet'
+  >;
+  farmAnimalDetails?: Omit<
+    IFarmAnimalDetails,
+    'id' | 'lk_pet_code' | 'pet_id' | 'created_at' | 'updated_at' | 'pet'
+  >;
+};

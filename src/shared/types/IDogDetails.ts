@@ -1,4 +1,4 @@
-import type { IPet } from '#src/shared';
+import type { IPetFiles, IPet } from '#src/shared';
 
 export type IDogDetails = {
   id: number;
@@ -11,9 +11,10 @@ export type IDogDetails = {
   good_with_cats: boolean;
   energy_level: EnergyLevel;
   exercise_needs_minutes: number;
+  files: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
-  pet: IPet;
+  pet?: IPet;
 };
 
 export type TrainingLevel = 'basic' | 'intermediate' | 'advanced';

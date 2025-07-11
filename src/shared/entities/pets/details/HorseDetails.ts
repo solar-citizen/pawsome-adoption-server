@@ -70,6 +70,12 @@ export class HorseDetails implements IHorseDetails {
   @Column({ type: 'boolean', default: false })
   suitable_for_beginners: boolean;
 
+  @Column({ type: 'jsonb', nullable: true })
+  files: {
+    photos: string[];
+    documents: string[];
+  } | null;
+
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 

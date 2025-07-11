@@ -60,6 +60,12 @@ export class FarmAnimalDetails implements IFarmAnimalDetails {
   })
   pasture_size_needed: string;
 
+  @Column({ type: 'jsonb', nullable: true })
+  files: {
+    photos: string[];
+    documents: string[];
+  } | null;
+
   @CreateDateColumn({ type: 'timestamptz', nullable: false })
   created_at: Date;
 

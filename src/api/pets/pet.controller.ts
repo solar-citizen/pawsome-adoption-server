@@ -5,6 +5,11 @@ import { withPagination } from '#src/shared';
 
 import { petService } from './pet.service';
 
+type PetRequestBody = {
+  petData?: string | object;
+  [key: string]: unknown;
+};
+
 export const petController = {
   getPets: asyncHandler(async (req: Request, res: Response) => {
     const result =
@@ -14,8 +19,32 @@ export const petController = {
     res.json(result);
   }),
 
-  createPet: asyncHandler(async (req: Request, res: Response) => {
-    const savedPet = await petService.createPet(req.body);
-    res.status(201).json(savedPet);
+  createPet: asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const body = req.body as PetRequestBody;
+    let petData: unknown;
+
+    if (typeof body === 'object' && 'petData' in body && body.petData !== undefined) {
+      const rawPetData = body.petData;
+      try {
+        petData = typeof rawPetData === 'string' ? JSON.parse(rawPetData) : rawPetData;
+      } catch (err) {
+        console.error('JSON parsing error:', err);
+        res.status(400).json({ error: 'Invalid JSON format in petData field' });
+        return;
+      }
+    } else {
+      petData = body;
+    }
+
+    try {
+      const savedPet = await petService.createPet(
+        petData,
+        req.files as Express.Multer.File[] | null,
+      );
+      res.status(201).json(savedPet);
+    } catch (err) {
+      console.error('Error creating pet:', err);
+      res.status(500).json({ error: 'Failed to create pet' });
+    }
   }),
 };

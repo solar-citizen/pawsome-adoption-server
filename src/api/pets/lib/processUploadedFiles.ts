@@ -19,32 +19,35 @@ import {
 
 const host = process.env.HOST;
 
-/**
- * Processes uploaded photos & documents, generates thumbnails,
- * persists Pet (and optional species details) in a single transaction,
- * and cleans up all uploaded files on error.
- */
-export async function processUploadedFilesWithRepos(
-  petRepository: Repository<Pet>,
-  petData: Partial<IPet> & ISpeciesDetailsData,
-  files: Express.Multer.File[] | MulterFilesObject | null,
-): Promise<IPet> {
-  const { photos, documents, allFiles } = multerUtils.processFiles(files);
-  const thumbnailsBySize: {
+type ProcessedFileData = {
+  thumbnails: {
     '800x600': string[];
     '640x480': string[];
     '400x300': string[];
-  } = {
-    '800x600': [],
-    '640x480': [],
-    '400x300': [],
+  };
+  filePaths: {
+    photos: string[];
+    documents: string[];
+  };
+  allFiles: Express.Multer.File[];
+};
+
+async function processFilesForPet(
+  files: Express.Multer.File[] | MulterFilesObject | null,
+): Promise<ProcessedFileData> {
+  const { photos, documents, allFiles } = multerUtils.processFiles(files);
+
+  const thumbnails = {
+    '800x600': [] as string[],
+    '640x480': [] as string[],
+    '400x300': [] as string[],
   };
 
   for (const file of photos) {
     const sizes = await processImage(file.path);
     for (const key of Object.keys(sizes) as (keyof typeof sizes)[]) {
       const thumbnailPath = path.relative(process.cwd(), sizes[key]).replace(/\\/g, '/');
-      thumbnailsBySize[key].push(`${host || ''}/${thumbnailPath}`);
+      thumbnails[key].push(`${host || ''}/${thumbnailPath}`);
     }
   }
 
@@ -58,6 +61,16 @@ export async function processUploadedFilesWithRepos(
       return `${host || ''}/${docPath}`;
     }),
   };
+
+  return { thumbnails, filePaths, allFiles };
+}
+
+export async function processUploadedFilesWithRepos(
+  petRepository: Repository<Pet>,
+  petData: Partial<IPet> & ISpeciesDetailsData,
+  files: Express.Multer.File[] | MulterFilesObject | null,
+): Promise<IPet> {
+  const { thumbnails, filePaths, allFiles } = await processFilesForPet(files);
 
   const queryRunner = petRepository.manager.connection.createQueryRunner();
   await queryRunner.connect();
@@ -75,15 +88,13 @@ export async function processUploadedFilesWithRepos(
       health: petData.health,
       is_available: petData.is_available,
       is_sterilized_flg: petData.is_sterilized_flg,
-      thumbnails: allFiles.length ? thumbnailsBySize : null,
+      thumbnails: allFiles.length ? thumbnails : null,
     });
 
     const savedPet = await repo.save(petEntity);
-
-    // Save species details with the saved pet's ID and lk_pet_code
     await saveSpeciesDetails(queryRunner, savedPet, petData, filePaths);
-
     await queryRunner.commitTransaction();
+
     return savedPet;
   } catch (err) {
     await queryRunner.rollbackTransaction();
@@ -98,7 +109,7 @@ async function saveSpeciesDetails(
   queryRunner: QueryRunner,
   pet: IPet,
   petData: Partial<IPet> & ISpeciesDetailsData,
-  files: { photos: string[]; documents: string[] },
+  filePaths: { photos: string[]; documents: string[] },
 ): Promise<void> {
   const map = {
     cat: { entity: CatDetails, key: 'catDetails' },
@@ -115,13 +126,11 @@ async function saveSpeciesDetails(
   if (!detailData) return;
 
   const repo = queryRunner.manager.getRepository(entity as EntityTarget<ObjectLiteral>);
-
-  // Create the details entity with the pet's ID and lk_pet_code
   const details = repo.create({
     ...detailData,
     lk_pet_code: pet.lk_pet_code,
     pet_id: pet.id,
-    files,
+    files: filePaths,
   } as DeepPartial<ObjectLiteral>);
 
   await repo.save(details);

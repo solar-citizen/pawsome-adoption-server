@@ -1,4 +1,4 @@
-import type { IPetFiles, IPet } from '#src/shared';
+import type { IPet, IPetFiles } from '#src/shared';
 
 export type IFarmAnimalDetails = {
   id: number;

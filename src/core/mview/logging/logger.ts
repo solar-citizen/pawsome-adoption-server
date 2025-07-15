@@ -1,4 +1,4 @@
-type LogLevel = 'info' | 'warn' | 'error';
+import type { LogLevel } from './types';
 
 function log(level: LogLevel, message: string, ...args: unknown[]): void {
   const timestamp = new Date().toISOString();

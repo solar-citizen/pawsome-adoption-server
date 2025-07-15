@@ -1,9 +1,13 @@
-import { effects, loggers, type MViewConfig, type MViewStatus, queries } from './lib';
+import { loggers, type MViewLogger } from '../logging';
+import { type MViewStatus, queries } from '../queries';
+import { effects, type MViewConfig } from '../scheduling';
 import { MViewStateManager } from './MViewStateManager';
 
 export class MViewManager {
   private readonly stateManager = new MViewStateManager();
   private readonly taskCleanupMap = new Map<string, () => Promise<void>>();
+
+  constructor(private logger: MViewLogger) {}
 
   registerView(config: MViewConfig): void {
     this.stateManager.registerView(config);
@@ -82,7 +86,9 @@ export class MViewManager {
     this.stateManager.setViewRunning(viewName, true);
 
     try {
-      await effects.executeRefresh(view.config, view.abortController.signal);
+      await this.logger.executeWithLogging(viewName, async () => {
+        await effects.executeRefresh(view.config, view.abortController.signal);
+      });
       const timestamp = new Date();
       this.stateManager.setViewRefreshed(viewName, timestamp);
       loggers.logViewRefreshed(viewName, timestamp);

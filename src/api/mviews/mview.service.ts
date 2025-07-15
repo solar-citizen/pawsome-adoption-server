@@ -1,7 +1,7 @@
-import { type MViewConfig, MViewManager, type MViewStatus } from '#src/core';
+import { type MViewConfig, MViewManager, mviewManager, type MViewStatus } from '#src/core';
 
 export class MViewService {
-  constructor(private manager: MViewManager = new MViewManager()) {}
+  constructor(private manager: MViewManager = mviewManager) {}
 
   getAllViews() {
     return this.manager.getAllStatuses();

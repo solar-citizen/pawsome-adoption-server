@@ -1,10 +1,6 @@
 import type { ScheduledTask } from 'node-cron';
 
-export type MViewConfig = {
-  readonly name: string;
-  readonly schedule: string;
-  readonly concurrent?: boolean;
-};
+import type { MViewConfig } from '../scheduling/types';
 
 export type MViewStatus = {
   readonly name: string;

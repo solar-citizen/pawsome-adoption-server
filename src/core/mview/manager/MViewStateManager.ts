@@ -1,6 +1,7 @@
 import type { ScheduledTask } from 'node-cron';
 
-import type { MViewConfig, MViewState, ViewState } from './lib';
+import type { MViewState, ViewState } from '../queries';
+import type { MViewConfig } from '../scheduling';
 
 export class MViewStateManager {
   private state: MViewState = { views: new Map() };

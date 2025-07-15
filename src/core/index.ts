@@ -1,3 +1,10 @@
-import { type MViewConfig, MViewManager, type MViewStatus } from './mview-manager/';
+import {
+  initializeMViewRefresh,
+  type MViewConfig,
+  MViewManager,
+  mviewManager,
+  type MViewStatus,
+} from './mview';
 
-export { type MViewConfig, MViewManager, type MViewStatus };
+export { initializeMViewRefresh, MViewManager, mviewManager };
+export type { MViewConfig, MViewStatus };

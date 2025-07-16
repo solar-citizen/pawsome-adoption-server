@@ -7,6 +7,8 @@ const { SPECIES } = unionValues;
 const basePetSchema = z.object({
   lk_pet_code: z.string().length(LK_PET_CODE_LENGTH),
   name: z.string().min(1).max(100),
+  description_txt: z.string().max(1000).optional().nullish(),
+  age_int: z.number().max(200).optional().nullish(),
   breed: z.string().min(1).max(100),
   specie: z.enum(SPECIES),
   sex_txt: z.string().min(1).max(10),

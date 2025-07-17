@@ -29,6 +29,14 @@ export const petService = {
   },
 
   /**
+   * Get pet by lk_pet_code
+   */
+  getPetByCode: async (lk_pet_code: string) => {
+    const qb = petRepository.createQueryBuilder('pets');
+    return await qb.where('lk_pet_code = :lk_pet_code', { lk_pet_code }).getOne();
+  },
+
+  /**
    * Get paginated pets with optional filtering from materialized view
    * mainly for reports
    */

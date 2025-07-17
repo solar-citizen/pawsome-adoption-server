@@ -8,9 +8,10 @@ import { petController } from './pet.controller';
 const upload = multer(uploadConfig);
 const petRouter = Router();
 
-const { createPet, getPets } = petController;
+const { createPet, getPets, getPetByCode } = petController;
 
 petRouter.get('/pets', getPets);
+petRouter.get('/pets/:lk_pet_code', getPetByCode);
 petRouter.post(
   '/pets',
   upload.fields([

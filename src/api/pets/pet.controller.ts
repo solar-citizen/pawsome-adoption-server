@@ -19,6 +19,16 @@ export const petController = {
     res.json(result);
   }),
 
+  getPetByCode: asyncHandler(async (req: Request, res: Response) => {
+    const { lk_pet_code } = req.params;
+    const pet = await petService.getPetByCode(lk_pet_code);
+    if (!pet) {
+      res.status(404).json({ message: 'Pet not found' });
+      return;
+    }
+    res.json(pet);
+  }),
+
   createPet: asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const body = req.body as PetRequestBody;
     let petData: unknown;

@@ -10,6 +10,8 @@ export type IPet = {
   id: number;
   lk_pet_code: string;
   name: string;
+  description_txt?: string | null;
+  age_int?: number | null;
   breed: string;
   specie: Specie;
   sex_txt: string;

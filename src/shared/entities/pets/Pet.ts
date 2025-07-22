@@ -46,6 +46,12 @@ export class Pet implements IPet {
   @Column({ type: 'varchar', nullable: false })
   sex_txt: string;
 
+  @Column({ type: 'text' })
+  description_txt?: string | null;
+
+  @Column({ type: 'smallint' })
+  age_int?: number | null;
+
   @Column({ type: 'varchar', length: 255 })
   special_needs: string | null;
 

@@ -1,14 +1,20 @@
 import type { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
-import { withPagination } from '#src/shared';
+import { AppDataSource, Pet, PetWithDetails, withPagination } from '#src/shared';
 
-import { petService } from './pet.service';
+import { getSpeciesFiles, stripFiles } from './lib/helpers';
+import { PetService } from './pet.service';
 
 type PetRequestBody = {
   petData?: string | object;
   [key: string]: unknown;
 };
+
+const petRepository = AppDataSource.getRepository(Pet);
+const petWithDetailsRepository = AppDataSource.getRepository(PetWithDetails);
+
+const petService = new PetService(petRepository, petWithDetailsRepository);
 
 export const petController = {
   getPets: asyncHandler(async (req: Request, res: Response) => {
@@ -18,6 +24,44 @@ export const petController = {
         : await withPagination(req, petService.getPaginatedPets);
     res.json(result);
   }),
+
+  getPetByCode: asyncHandler(async (req: Request, res: Response) => {
+    const { lk_pet_code } = req.params;
+    const pet = await petService.getPetByCode(lk_pet_code);
+    if (!pet) {
+      res.status(404).json({ message: 'Pet not found' });
+      return;
+    }
+    res.json(pet);
+  }),
+
+  getPetByCodeWithSpeciesDetails: asyncHandler(async (req: Request, res: Response) => {
+    const { lk_pet_code } = req.params;
+    const pet = await petService.getPetByCodeWithSpeciesDetails(lk_pet_code);
+    if (!pet) {
+      res.status(404).json({ message: 'Pet not found' });
+      return;
+    }
+    res.json(pet);
+  }),
+
+  getPetByCodeWithSpeciesDetailsAndSimilarPets: asyncHandler(
+    async (req: Request, res: Response) => {
+      const { lk_pet_code } = req.params;
+      const { main, similar } =
+        await petService.getPetByCodeWithSpeciesDetailsAndSimilarPets(lk_pet_code);
+
+      if (!main) {
+        res.status(404).json({ error: 'Pet not found.' }).end();
+        return;
+      }
+
+      const { photos, documents } = getSpeciesFiles(main);
+      const cleanedMain = stripFiles(main);
+
+      res.json({ main: cleanedMain, photos, documents, similar });
+    },
+  ),
 
   createPet: asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const body = req.body as PetRequestBody;

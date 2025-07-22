@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import morgan from 'morgan';
 
 import { router } from '#src/api';
+import { initializeMViewRefresh } from '#src/core';
 import { AppDataSource, corsConfig, limiter } from '#src/shared';
 
 config();
@@ -52,6 +53,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
  */
 const init = async (): Promise<Express> => {
   try {
+    initializeMViewRefresh();
     await AppDataSource.initialize();
     console.log('Database connection established successfully');
     return app;

@@ -12,7 +12,7 @@ export type IHorseDetails = {
   discipline: string;
   temperament: string;
   suitable_for_beginners: boolean;
-  files: IPetFiles | null;
+  files?: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
   pet?: IPet;

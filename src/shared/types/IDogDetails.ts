@@ -11,7 +11,7 @@ export type IDogDetails = {
   good_with_cats: boolean;
   energy_level: EnergyLevel;
   exercise_needs_minutes: number;
-  files: IPetFiles | null;
+  files?: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
   pet?: IPet;

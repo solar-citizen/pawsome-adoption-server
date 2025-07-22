@@ -4,17 +4,14 @@ import path from 'path';
 import type { DeepPartial, EntityTarget, ObjectLiteral, QueryRunner, Repository } from 'typeorm';
 
 import {
-  CatDetails,
   cleanupFiles,
-  DogDetails,
-  FarmAnimalDetails,
-  HorseDetails,
   type IPet,
   type ISpeciesDetailsData,
   MulterFilesObject,
   multerUtils,
   Pet,
   processImage,
+  SPECIES_MAPPING,
 } from '#src/shared';
 
 const host = process.env.HOST;
@@ -111,17 +108,10 @@ async function saveSpeciesDetails(
   petData: Partial<IPet> & ISpeciesDetailsData,
   filePaths: { photos: string[]; documents: string[] },
 ): Promise<void> {
-  const map = {
-    cat: { entity: CatDetails, key: 'catDetails' },
-    dog: { entity: DogDetails, key: 'dogDetails' },
-    horse: { entity: HorseDetails, key: 'horseDetails' },
-    'farm-animal': { entity: FarmAnimalDetails, key: 'farmAnimalDetails' },
-  } as const;
-
-  const specie = petData.specie as keyof typeof map | undefined;
+  const specie = petData.specie as keyof typeof SPECIES_MAPPING | undefined;
   if (!specie) return;
 
-  const { entity, key } = map[specie];
+  const { entity, key } = SPECIES_MAPPING[specie];
   const detailData = petData[key];
   if (!detailData) return;
 

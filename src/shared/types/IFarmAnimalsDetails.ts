@@ -12,7 +12,7 @@ export type IFarmAnimalDetails = {
   needs_companion: boolean;
   special_care_needs: string;
   pasture_size_needed: string;
-  files: IPetFiles | null;
+  files?: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
   pet?: IPet;

@@ -1,13 +1,15 @@
+import { Repository } from 'typeorm';
 import { z, ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
 import {
   AppDataSource,
-  ICatDetails,
-  IDogDetails,
-  IFarmAnimalDetails,
-  IHorseDetails,
-  IPet,
+  type ICatDetails,
+  type IDogDetails,
+  type IFarmAnimalDetails,
+  type IHorseDetails,
+  type IPet,
+  type IPetWithDetails,
   Pet,
   PetWithDetails,
 } from '#src/shared';
@@ -16,51 +18,95 @@ import { getPaginatedPets } from './lib/getPaginatedPets';
 import { processUploadedFilesWithRepos } from './lib/processUploadedFiles';
 import { PetCreateSchema } from './pet.schema';
 
-const petRepository = AppDataSource.getRepository(Pet);
-const petWithDetailsRepository = AppDataSource.getRepository(PetWithDetails);
-
-export const petService = {
-  /**
-   * Get paginated pets with optional filtering from the table
-   * for general usage
-   */
-  getPaginatedPets: async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
-    return getPaginatedPets(petRepository, 'pet', page, limit, fullTextSearch);
-  },
+export class PetService {
+  constructor(
+    private readonly petRepo: Repository<Pet> = AppDataSource.getRepository(Pet),
+    private readonly petWithDetailsRepo: Repository<PetWithDetails> = AppDataSource.getRepository(
+      PetWithDetails,
+    ),
+  ) {}
 
   /**
-   * Get pet by lk_pet_code
+   * Get paginated pets with optional filtering for general usage.
    */
-  getPetByCode: async (lk_pet_code: string) => {
-    const qb = petRepository.createQueryBuilder('pets');
-    return await qb.where('lk_pet_code = :lk_pet_code', { lk_pet_code }).getOne();
-  },
+  getPaginatedPets = async (page = 1, limit = 10, fullTextSearch: string | null = null) => {
+    return getPaginatedPets(this.petRepo, 'pet', page, limit, fullTextSearch);
+  };
 
   /**
-   * Get paginated pets with optional filtering from materialized view
-   * mainly for reports
+   * Get a plain Pet by its lk_pet_code.
    */
-  getPaginatedPetsWithDetails: async (
+  async getPetByCode(lk_pet_code: string): Promise<IPet | null> {
+    return this.petRepo
+      .createQueryBuilder('pet')
+      .where('pet.lk_pet_code = :code', { code: lk_pet_code })
+      .getOne();
+  }
+
+  /**
+   * Get Pet with species-specific details joined.
+   */
+  async getPetByCodeWithSpeciesDetails(
+    lk_pet_code: string,
+  ): Promise<IPetWithDetails | IPet | null> {
+    const result = await this.petRepo
+      .createQueryBuilder('pet')
+      .leftJoinAndSelect('pet.catDetails', 'catDetails')
+      .leftJoinAndSelect('pet.dogDetails', 'dogDetails')
+      .leftJoinAndSelect('pet.horseDetails', 'horseDetails')
+      .leftJoinAndSelect('pet.farmAnimalDetails', 'farmAnimalDetails')
+      .where('pet.lk_pet_code = :code', { code: lk_pet_code })
+      .getOne();
+
+    return result ?? null;
+  }
+
+  /**
+   * Get Pet with species details and similar pets
+   * filtered by specie, breed, and age.
+   */
+  async getPetByCodeWithSpeciesDetailsAndSimilarPets(
+    lk_pet_code: string,
+  ): Promise<{ main: IPetWithDetails | IPet | null; similar: IPet[] }> {
+    const main = await this.getPetByCodeWithSpeciesDetails(lk_pet_code);
+
+    if (!main) {
+      return { main: null, similar: [] };
+    }
+
+    const qb = this.petRepo
+      .createQueryBuilder('pet')
+      .where('pet.lk_pet_code != :code', { code: lk_pet_code })
+      .andWhere('pet.specie = :specie', { specie: main.specie });
+
+    if ((main as IPet).breed) {
+      qb.andWhere('pet.breed = :breed', { breed: main.breed });
+    }
+
+    if ((main as IPet).age_int != null) {
+      qb.andWhere('pet.age_int = :age', { age: main.age_int });
+    }
+
+    const similar = await qb.getMany();
+
+    return { main, similar };
+  }
+
+  /**
+   * Get paginated pets with details from materialized view for reports.
+   */
+  getPaginatedPetsWithDetails = async (
     page = 1,
     limit = 10,
     fullTextSearch: string | null = null,
   ) => {
-    return getPaginatedPets(petWithDetailsRepository, 'pwd', page, limit, fullTextSearch);
-  },
+    return getPaginatedPets(this.petWithDetailsRepo, 'pwd', page, limit, fullTextSearch);
+  };
 
   /**
    * Creates a new pet with optional file uploads (photos and documents).
-   *
-   * @param {unknown} petData
-   * Raw pet data to be validated and processed. Must conform to PetCreateSchema
-   * @param {Express.Multer.File[] | null} files
-   * Array of uploaded files (photos/documents) or null if no files
-   * @returns {Promise<IPet>}
-   * Promise that resolves to the created pet entity with generated thumbnails
-   * @throws {Error} Throws validation error if petData doesn't match PetCreateSchema
-   * @throws {Error} Throws database or file processing errors during pet creation
    */
-  createPet: async (petData: unknown, files: Express.Multer.File[] | null): Promise<IPet> => {
+  async createPet(petData: unknown, files: Express.Multer.File[] | null): Promise<IPet> {
     let dataTyped: z.infer<typeof PetCreateSchema>;
 
     try {
@@ -72,10 +118,10 @@ export const petService = {
       throw error;
     }
 
-    return await processUploadedFilesWithRepos(
-      petRepository,
+    return processUploadedFilesWithRepos(
+      this.petRepo,
       dataTyped as Partial<IPet> & (ICatDetails | IDogDetails | IFarmAnimalDetails | IHorseDetails),
       files,
     );
-  },
-};
+  }
+}

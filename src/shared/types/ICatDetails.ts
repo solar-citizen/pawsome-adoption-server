@@ -12,7 +12,7 @@ export type ICatDetails = {
   good_with_other_cats: boolean;
   good_with_dogs: boolean;
   needs_special_diet: boolean;
-  files: IPetFiles | null;
+  files?: IPetFiles | null;
   created_at: Date;
   updated_at: Date;
   pet?: IPet;

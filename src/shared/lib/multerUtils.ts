@@ -30,7 +30,7 @@ export const multerUtils = {
   /**
    * Extracts photos and documents from files object
    */
-  extractPhotosDocs: (filesObj: MulterFilesObject) => {
+  extractFiles: (filesObj: MulterFilesObject) => {
     const photos = multerUtils.getFiles(filesObj, 'photos');
     const documents = multerUtils.getFiles(filesObj, 'documents');
     const allFiles = [...photos, ...documents];
@@ -63,7 +63,7 @@ export const multerUtils = {
       return { photos, documents, allFiles };
     } else {
       // Handle object format
-      return multerUtils.extractPhotosDocs(files);
+      return multerUtils.extractFiles(files);
     }
   },
 };

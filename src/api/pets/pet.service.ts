@@ -69,7 +69,6 @@ export class PetService {
     lk_pet_code: string,
   ): Promise<{ main: IPetWithDetails | IPet | null; similar: IPet[] }> {
     const main = await this.getPetByCodeWithSpeciesDetails(lk_pet_code);
-
     if (!main) {
       return { main: null, similar: [] };
     }
@@ -79,16 +78,27 @@ export class PetService {
       .where('pet.lk_pet_code != :code', { code: lk_pet_code })
       .andWhere('pet.specie = :specie', { specie: main.specie });
 
-    if ((main as IPet).breed) {
-      qb.andWhere('pet.breed = :breed', { breed: main.breed });
+    const orConditions: string[] = [];
+    const orParams: Record<string, string> = {};
+
+    if (main.breed) {
+      orConditions.push('pet.breed = :breed');
+      orParams.breed = main.breed;
     }
 
-    if ((main as IPet).age_int != null) {
-      qb.andWhere('pet.age_int = :age', { age: main.age_int });
+    if (main.age_int != null) {
+      const ageMin = Math.max(1, main.age_int - 1);
+      const ageMax = main.age_int + 1;
+      orConditions.push('pet.age_int BETWEEN :ageMin AND :ageMax');
+      orParams.ageMin = ageMin.toString();
+      orParams.ageMax = ageMax.toString();
+    }
+
+    if (orConditions.length > 0) {
+      qb.andWhere(`(${orConditions.join(' OR ')})`, orParams);
     }
 
     const similar = await qb.getMany();
-
     return { main, similar };
   }
 

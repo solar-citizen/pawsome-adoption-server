@@ -50,7 +50,12 @@ async function processFilesForPet(
 
   const filePaths = {
     photos: photos.map(file => {
-      const imgPath = path.relative(process.cwd(), file.path).replace(/\\/g, '/');
+      const originalPath = file.path;
+      const baseFilename = path
+        .basename(originalPath)
+        .replace(/\.(jpg|jpeg|png|bmp|webp|avif)$/i, '');
+      const webpPath = path.join(path.dirname(originalPath), `${baseFilename}.webp`);
+      const imgPath = path.relative(process.cwd(), webpPath).replace(/\\/g, '/');
       return `${host || ''}/${imgPath}`;
     }),
     documents: documents.map(file => {

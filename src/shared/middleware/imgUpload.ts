@@ -82,8 +82,19 @@ export async function processImage(filePath: string): Promise<ThumbnailPaths> {
   const filename = path.basename(filePath);
   const baseFilename = filename.replace(/\.(jpg|jpeg|png|bmp|webp|avif)$/i, '');
 
+  // Optimized original file
+  const optimizedOriginalPath = path.join(fileDir, `${baseFilename}.webp`);
+  await sharp(filePath)
+    .resize(1920, 1920, {
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .webp({ quality: 90 })
+    .toFile(optimizedOriginalPath);
+
   const out: Partial<ThumbnailPaths> = {};
 
+  // Thumbnails
   await Promise.all(
     sizes.map(async ({ name, width, height }) => {
       const thumbnailPath = path.join(thumbnailsDir, `${baseFilename}_${name}.webp`);
@@ -95,6 +106,7 @@ export async function processImage(filePath: string): Promise<ThumbnailPaths> {
     }),
   );
 
+  // Delete the original uploaded file
   await unlink(filePath);
 
   return out as ThumbnailPaths;
